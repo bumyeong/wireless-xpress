@@ -1,4 +1,4 @@
-package com.silabs.bgxcommander;
+package com.bumyeong.btlinkap;
 
 import android.content.Context;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.silabs.bgxcommander", appContext.getPackageName());
+        assertEquals("com.bumyeong.btlinkap", appContext.getPackageName());
     }
 }

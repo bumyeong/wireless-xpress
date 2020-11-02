@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.silabs.bgxcommander;
+package com.bumyeong.btlinkap;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;

@@ -1,9 +1,11 @@
 <resources>
-    <string name="app_name">Commander</string>
+    <string name="app_name">BT LINK AP</string>
     <string name="title_activity_device_details">DeviceDetails</string>
     <string name="stream_label">STREAM</string>
     <string name="command_label">COMMAND</string>
     <string name="send_label">SEND</string>
+    <string name="get_label">보내기</string>
+    <string name="stop_label">정지</string>
     <string name="uuid_label">UUID</string>
     <string name="rssi_label">RSSI</string>
     <string name="about_menuitem_label">About</string>
@@ -70,5 +72,13 @@
     <string name="send_with_newline_label">add newline characters on Send</string>
     <string name="useAckdOTA">Use acknowledged data transfers for update</string>
     <string name="Save">Save</string>
+    <string-array name="timer_interval">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+    </string-array>
 
 </resources>

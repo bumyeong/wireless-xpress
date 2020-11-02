@@ -12,7 +12,7 @@
  */
 
 
-package com.silabs.bgxcommander;
+package com.bumyeong.btlinkap;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
@@ -32,17 +32,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BGXDeviceListAdapter extends RecyclerView.Adapter<BGXDeviceListAdapter.ViewHolder> {
+    private final static String TAG = "bgx_dbg"; //BGXDeviceListAdapter.class.getSimpleName();
 
     private Context context;
     private ArrayList<HashMap<String, String>> mDataset;
     private LayoutInflater mInflater;
-
     private View mSelectedRowView = null;
     private Handler mHandler = new Handler();
 
-
-
-    BGXDeviceListAdapter(Context context, ArrayList dataset ) {
+    BGXDeviceListAdapter(Context context, ArrayList dataset) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.mDataset = dataset;
@@ -59,16 +57,13 @@ public class BGXDeviceListAdapter extends RecyclerView.Adapter<BGXDeviceListAdap
         final int rowPosition = position;
         final HashMap<String, String> deviceRecord = mDataset.get(position);
         String deviceName = deviceRecord.get("name");
+
         final String deviceAddress = deviceRecord.get("uuid");
         String rssiValueStr = deviceRecord.get("rssi");
-
-
 
         holder.getTextView().setText(deviceName);
         holder.getUuidTextView().setText(deviceAddress);
         holder.getRssiValueTextView().setText(rssiValueStr);
-
-
     }
 
     @Override
@@ -77,34 +72,32 @@ public class BGXDeviceListAdapter extends RecyclerView.Adapter<BGXDeviceListAdap
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView mDeviceNameTextView ;
+        TextView mDeviceNameTextView;
         TextView uuidTextView;
         TextView rssiValueTextView;
         Boolean fConnected;
-
         BluetoothDevice btDevice = null;
 
         ViewHolder(View itemView) {
             super(itemView);
+
             fConnected = false;
             itemView.setOnClickListener(this);
             itemView.setBackgroundColor(Color.WHITE);
+
             mDeviceNameTextView = itemView.findViewById(R.id.DeviceNameTextView);
             uuidTextView = itemView.findViewById(R.id.DeviceUUIDTextView);
             rssiValueTextView = itemView.findViewById(R.id.rssiValueTextView);
         }
 
-
         @Override
         public void onClick(View v) {
-
-            Log.d("bgx_dbg", "Selected "+mDeviceNameTextView.getText()+" "+uuidTextView.getText());
+            Log.d(TAG, "SELECTED " + mDeviceNameTextView.getText() + " " + uuidTextView.getText());
 
             Intent intent2 = new Intent(context, IndeterminateProgressActivity.class);
             intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent2.putExtra("DeviceAddress", uuidTextView.getText().toString());
             intent2.putExtra("DeviceName", mDeviceNameTextView.getText().toString());
-
             context.startActivity(intent2);
 
             BGXpressService.startActionStopScan(context);
@@ -119,11 +112,10 @@ public class BGXDeviceListAdapter extends RecyclerView.Adapter<BGXDeviceListAdap
                     }
                 }
             }, 500);
-
         }
 
         public TextView getTextView() {
-            return mDeviceNameTextView ;
+            return mDeviceNameTextView;
         }
 
         public TextView getUuidTextView() {
@@ -133,9 +125,5 @@ public class BGXDeviceListAdapter extends RecyclerView.Adapter<BGXDeviceListAdap
         public TextView getRssiValueTextView() {
             return rssiValueTextView;
         }
-
-
-
     }
-
 }

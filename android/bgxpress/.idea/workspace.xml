@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="8fd73273-d515-4171-81f4-8b0bf78e9fd9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../BGXCommander/app/src/main/java/com/silabs/bgxcommander/DeviceDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BGXCommander/app/src/main/java/com/silabs/bgxcommander/DeviceDetails.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view />
+      </state>
+    </system>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectId" id="1ha7vUB7K2XbAkd4jMLOPPMmSae" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../BGXCommander" />
+    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8fd73273-d515-4171-81f4-8b0bf78e9fd9" name="Default Changelist" comment="" />
+      <created>1600237579558</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1600237579558</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="-760" y="715" key="FileChooserDialogImpl" timestamp="1602476386683">
+      <screen x="-1080" y="0" width="1080" height="1920" />
+    </state>
+    <state x="-760" y="715" key="FileChooserDialogImpl/0.0.1920.1040/-1080.0.1080.1920@-1080.0.1080.1920" timestamp="1602476386683" />
+    <state x="-843" y="702" width="605" height="516" key="find.popup" timestamp="1602476237364">
+      <screen x="-1080" y="0" width="1080" height="1920" />
+    </state>
+    <state x="-843" y="702" width="605" height="516" key="find.popup/0.0.1920.1040/-1080.0.1080.1920@-1080.0.1080.1920" timestamp="1602476237364" />
+  </component>
+</project>

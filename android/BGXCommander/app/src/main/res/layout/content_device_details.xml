@@ -12,24 +12,26 @@
         android:id="@+id/streamRB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/stream_label"
         app:layout_constraintEnd_toStartOf="@+id/commandRB"
         app:layout_constraintHorizontal_bias="0.626"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="invisible" />
 
     <RadioButton
         android:id="@+id/commandRB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="72dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="72dp"
         android:text="@string/command_label"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="invisible" />
 
 
     <ImageButton
@@ -37,20 +39,21 @@
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:contentDescription="@string/ClearButtonExplanation"
         android:src="@drawable/clear_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/commandRB" />
+        app:layout_constraintTop_toBottomOf="@+id/commandRB"
+        tools:visibility="invisible" />
 
     <EditText
         android:id="@+id/streamEditText"
         android:layout_width="318dp"
-        android:layout_height="174dp"
+        android:layout_height="300dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="2dp"
         android:textSize="12sp"
         android:ems="10"
         android:inputType="none"
@@ -68,28 +71,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/commandRB" />
 
-    <EditText
-        android:id="@+id/msgEditText"
-        android:layout_width="251dp"
+    <!--        android:prompt="@string/country_prompt"-->
+
+    <Switch
+        android:id="@+id/swAutoSend"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginLeft="50dp"
         android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="@string/SendMessageBoxHint"
+        android:checked="false"
+        android:showText="true"
+        android:switchMinWidth="56dp"
+        android:text="자동 데이터 송신 : "
+        android:textOff="OFF"
+        android:textOn="ON"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/streamEditText" />
 
-    <Button
-        android:id="@+id/sendButton"
+    <Spinner
+        android:id="@+id/sprTimerInterval"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:entries="@array/timer_interval"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/swAutoSend"
+        app:layout_constraintTop_toBottomOf="@+id/streamEditText" />
+
+    <Button
+        android:id="@+id/getButton"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/send_label"
+        android:layout_marginTop="20dp"
+        android:text="@string/get_label"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/msgEditText"
-        app:layout_constraintTop_toBottomOf="@+id/streamEditText" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/swAutoSend" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
