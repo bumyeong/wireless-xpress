@@ -6,17 +6,6 @@
     android:orientation="vertical">
 
     <TextView
-        android:layout_width="200dp"
-        android:layout_height="35dp"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:text="@string/AboutLabel"
-        android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <TextView
         android:id="@+id/version_info"
         android:layout_width="200dp"
         android:layout_height="35dp"

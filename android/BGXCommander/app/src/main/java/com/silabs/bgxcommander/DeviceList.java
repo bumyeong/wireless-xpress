@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.silabs.bgxcommander;
+package com.bumyeong.rfhook;
 
 import android.Manifest;
 import android.app.Activity;
@@ -56,6 +56,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DeviceList extends AppCompatActivity {
+    private final static String TAG = "bgx_dbg"; //DeviceList.class.getSimpleName();
 
     private int REQUEST_ENABLE_BT = 1;
     private Handler mHandler;
@@ -71,44 +72,50 @@ public class DeviceList extends AppCompatActivity {
 
     private boolean fScanning = false;
     private boolean fLocationPermissionGranted = false;
+    private boolean fInvalidGattHandles = false;
+
     private BroadcastReceiver mDeviceDiscoveryReceiver;
 
     private MenuItem mScanItem;
     private Context mContext;
 
-    private Boolean mInvalidGattHandles;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_list);
+
         mContext = this;
-        mInvalidGattHandles = false;
+        fInvalidGattHandles = false;
 
         mDeviceDiscoveryReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
-                switch(intent.getAction()) {
+                switch (intent.getAction()) {
+                    //------------------------------------------------------------------------------
                     case BGXpressService.BGX_SCAN_DEVICE_DISCOVERED: {
-                        HashMap<String, String> deviceRecord = (HashMap<String, String>) intent.getSerializableExtra("DeviceRecord");
+                    //------------------------------------------------------------------------------
+                        Log.d(TAG, "BroadcastReceiver - BGXpressService.BGX_SCAN_DEVICE_DISCOVERED");
+                        HashMap<String, String> deviceRecord =
+                                (HashMap<String, String>) intent.getSerializableExtra("DeviceRecord");
 
-                        // must now check if the scan resuls already contain this device because we are no longer clearing the scan results when scan starts
-                        // because in multi-connect scenario you wouldn't rediscover devices you are already connected to.
+                        // must now check if the scan results already contain this device
+                        // because we are no longer clearing the scan results
+                        // when scan starts because in multi-connect scenario you wouldn't rediscover devices you are already connected to.
 
                         String devAddr = deviceRecord.get("uuid");
-                        Boolean fContainsRecord = false;
+                        boolean fContainsRecord = false;
+
                         for (int i = 0; i < mScanResults.size(); ++i) {
                             HashMap<String, String> iDeviceRecord = (HashMap<String, String>) mScanResults.get(i);
                             String iDeviceAddr = iDeviceRecord.get("uuid");
+
                             if (devAddr.equalsIgnoreCase(iDeviceAddr)) {
                                 fContainsRecord = true;
                                 break;
                             }
-
                         }
 
-                        if (!fContainsRecord) {
+                        if (fContainsRecord == false) {
                             mScanResults.add(deviceRecord);
 
                             Collections.sort(mScanResults, new Comparator<Map<String, String>>() {
@@ -125,12 +132,14 @@ public class DeviceList extends AppCompatActivity {
                             mDeviceListRecyclerView.swapAdapter(mDeviceListAdapter, true);
                         }
                     }
-                        break;
+                    break;
 
+                    //------------------------------------------------------------------------------
                     case BGXpressService.BGX_CONNECTION_STATUS_CHANGE: {
-                        if (!mInvalidGattHandles) {
+                    //------------------------------------------------------------------------------
+                        Log.d(TAG, "BroadcastReceiver - BGXpressService.BGX_CONNECTION_STATUS_CHANGE");
+                        if (fInvalidGattHandles == false) {
                             BGX_CONNECTION_STATUS connectionStatusValue = (BGX_CONNECTION_STATUS) intent.getSerializableExtra("bgx-connection-status");
-
 
                             if (BGX_CONNECTION_STATUS.CONNECTED == connectionStatusValue) {
                                 BluetoothDevice btDevice = (BluetoothDevice) intent.getParcelableExtra("device");
@@ -143,41 +152,47 @@ public class DeviceList extends AppCompatActivity {
                                 BGXpressService.setBGXAcknowledgedReads(btDevice.getAddress(), true);
                                 BGXpressService.setBGXAcknowledgedWrites(btDevice.getAddress(), true);
 
+                                Log.d(TAG, "startActivity - " + DeviceDetails.class.toString());
                                 context.startActivity(intent2);
                             }
                         }
                     }
-                        break;
+                    break;
+
+                    //------------------------------------------------------------------------------
                     case BGXpressService.BGX_SCAN_MODE_CHANGE: {
+                    //------------------------------------------------------------------------------
+                        Log.d(TAG, "BroadcastReceiver - BGXpressService.BGX_SCAN_MODE_CHANGE");
                         fScanning = intent.getBooleanExtra("isscanning", false);
                         boolean fScanFailed = intent.getBooleanExtra("scanFailed", false);
                         if (fScanFailed) {
                             int error = intent.getIntExtra("error", 0);
-                            Toast.makeText(mContext, "Scan Failed. Error: "+error, Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, "Scan Failed. Error: " + error, Toast.LENGTH_LONG).show();
                         }
                     }
                     break;
+
+                    //------------------------------------------------------------------------------
                     case BGXpressService.BGX_INVALID_GATT_HANDLES: {
-
-
+                    //------------------------------------------------------------------------------
+                        Log.d(TAG, "BroadcastReceiver - BGXpressService.BGX_INVALID_GATT_HANDLES");
                         String deviceAddress = intent.getStringExtra("DeviceAddress");
                         String deviceName = intent.getStringExtra("DeviceName");
                         BGXpressService.startActionBGXCancelConnect(mContext, deviceAddress);
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                         builder.setTitle("Invalid GATT Handles");
-                        builder.setMessage("The bonding information on this device is invalid (probably due to a firmware update). You should select "+deviceName+" in the Bluetooth Settings and choose \"Forget\" and then turn Bluetooth off and back on.");
+                        builder.setMessage("The bonding information on this device is invalid (probably due to a firmware update). You should select " + deviceName + " in the Bluetooth Settings and choose \"Forget\" and then turn Bluetooth off and back on.");
                         builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
                             }
                         });
+
                         AlertDialog dlg = builder.create();
                         dlg.show();
                     }
                     break;
-
                 }
             }
         };
@@ -186,11 +201,7 @@ public class DeviceList extends AppCompatActivity {
         listIntentFilter.addAction(BGXpressService.BGX_CONNECTION_STATUS_CHANGE);
         listIntentFilter.addAction(BGXpressService.BGX_SCAN_MODE_CHANGE);
         listIntentFilter.addAction(BGXpressService.BGX_INVALID_GATT_HANDLES);
-
-
-
         registerReceiver(mDeviceDiscoveryReceiver, listIntentFilter);
-
 
         mDeviceListRecyclerView = (RecyclerView) findViewById(R.id.DeviceListRecyclerView);
         mDeviceListRecyclerView.setHasFixedSize(true);
@@ -205,19 +216,20 @@ public class DeviceList extends AppCompatActivity {
         mDeviceListAdapter = new BGXDeviceListAdapter(this, mScanResults);
         mDeviceListRecyclerView.setAdapter(mDeviceListAdapter);
 
-        mBluetoothDisabledWarningTextView = (TextView)findViewById(R.id.BluetoothDisabledWarning);
-        mLocationPermissionDeniedTextView = (TextView)findViewById(R.id.LocationPermissionDenied);
+        mBluetoothDisabledWarningTextView = (TextView) findViewById(R.id.BluetoothDisabledWarning);
+        mLocationPermissionDeniedTextView = (TextView) findViewById(R.id.LocationPermissionDenied);
 
         mHandler = new Handler();
-        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            Log.e("bgx_dbg", "BLE Not Supported.");
+
+        if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE) == false) {
+            Log.e(TAG, "BLE Not Supported.");
             finish();
         }
 
-        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
-
+        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
         startService(new Intent(this, BGXpressService.class));
 
+        // ?????
         final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
     }
 
@@ -229,29 +241,26 @@ public class DeviceList extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-       getMenuInflater().inflate(R.menu.devicelist, menu);
-
+        getMenuInflater().inflate(R.menu.devicelist, menu);
         mScanItem = menu.findItem(R.id.scan_menuitem);
-
-       return true;
+        return true;
     }
-
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem mi) {
-        switch(mi.getItemId()) {
-            case R.id.scan_menuitem:
-                Log.d("bgx_dbg", "Scan now");
+        if (mi.getItemId() == R.id.scan_menuitem) {
+                Log.d(TAG, "menu - SCAN");
 
                 // clear the scan list
+                // ????
 
-                if (!fLocationPermissionGranted) {
-                    Toast.makeText(this, "No location permission", Toast.LENGTH_LONG).show();
+                if (fLocationPermissionGranted == false) {
+                    Toast.makeText(this, "NO Location Permission", Toast.LENGTH_LONG).show();
                     return true;
                 }
 
-                if (fScanning) {
+                if (fScanning == true) {
                     BGXpressService.startActionStopScan(this);
                 }
 
@@ -261,90 +270,9 @@ public class DeviceList extends AppCompatActivity {
                         scanForDevices();
                     }
                 }, 200);
-
                 return true;
-            case R.id.about_menuitem:
-                try {
-                    PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
-
-                    final Dialog aboutDialog = new Dialog( this );
-                    aboutDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    aboutDialog.setContentView(R.layout.aboutbox);
-
-                    TextView versionText = (TextView)aboutDialog.findViewById(R.id.version_info);
-
-                    versionText.setText(getString(R.string.VersionNameLabel, pInfo.versionName, PackageInfoCompat.getLongVersionCode(pInfo) ));
-
-                    Button okayButton = (Button)aboutDialog.findViewById(R.id.btn_ok);
-                    okayButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            aboutDialog.dismiss();
-                        }
-                    });
-
-                    aboutDialog.show();
-
-
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case R.id.help_item: {
-
-                String sHelpURL = getString(R.string.help_url);
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(sHelpURL));
-                browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(browserIntent);
-
-                return true;
-            }
-            case R.id.options_menuitem: {
-                final SharedPreferences sp = mContext.getSharedPreferences("com.silabs.bgxcommander", MODE_PRIVATE);
-                Boolean fNewLinesOnSendValue =  sp.getBoolean("newlinesOnSend", true);
-                Boolean fUseAckdWritesForOTA = sp.getBoolean("useAckdWritesForOTA", true);
-
-                final Dialog optionsDialog = new Dialog(this);
-                optionsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                optionsDialog.setContentView(R.layout.optionsbox);
-
-                final CheckBox newLineCB = (CheckBox) optionsDialog.findViewById(R.id.newline_cb);
-                final CheckBox otaAckdWrites = (CheckBox) optionsDialog.findViewById(R.id.acknowledgedOTA);
-
-                newLineCB.setChecked(fNewLinesOnSendValue);
-                otaAckdWrites.setChecked(fUseAckdWritesForOTA);
-
-                Button saveButton = (Button)optionsDialog.findViewById(R.id.save_btn);
-                saveButton.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-
-                        Boolean fValue = newLineCB.isChecked();
-                        Boolean fValue2 = otaAckdWrites.isChecked();
-
-                        SharedPreferences.Editor editor = sp.edit();
-
-                        editor.putBoolean("newlinesOnSend", fValue);
-                        editor.putBoolean("useAckdWritesForOTA", fValue2);
-
-                        editor.apply();
-
-                        optionsDialog.dismiss();
-                    }
-                });
-
-                Button cancelButton = (Button)optionsDialog.findViewById(R.id.cancel_btn);
-                cancelButton.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-                        optionsDialog.dismiss();
-                    }
-                });
-
-                optionsDialog.show();
-            }
-            break;
         }
+
         return super.onOptionsItemSelected(mi);
     }
 
@@ -354,13 +282,13 @@ public class DeviceList extends AppCompatActivity {
             case PERMISSION_REQUEST_COARSE_LOCATION: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission granted, yay! Start the Bluetooth device scan.
-                    Log.d("bgx_dbg", "Received permissions to use location.");
+                    Log.d(TAG, "Received permissions to use location.");
                     fLocationPermissionGranted = true;
                     mLocationPermissionDeniedTextView.setVisibility(View.GONE);
                     mDeviceListRecyclerView.setVisibility(View.VISIBLE);
                 } else {
                     // Alert the user that this application requires the location permission to perform the scan.
-                    Log.e("bgx_dbg", "Did not get permissions to use location.");
+                    Log.e(TAG, "Did not get permissions to use location.");
                     fLocationPermissionGranted = false;
 
                     mLocationPermissionDeniedTextView.setVisibility(View.VISIBLE);
@@ -389,9 +317,9 @@ public class DeviceList extends AppCompatActivity {
             }
 
 
-        } catch(Exception e) {
-            Log.d("bgx_dbg", "Exception caught while calling isEnabled.");
-            Toast.makeText(this,"Exception caught", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Log.d(TAG, "Exception caught while calling isEnabled.");
+            Toast.makeText(this, "Exception caught", Toast.LENGTH_LONG).show();
         }
 
         if (fAdapterEnabled && fLocationPermissionGranted) {
@@ -401,7 +329,7 @@ public class DeviceList extends AppCompatActivity {
             }
 
             if (null == BluetoothAdapter.getDefaultAdapter() || !fAdapterEnabled) {
-                Log.d("bgx_dbg", "bluetooth adapter is not available.");
+                Log.d(TAG, "bluetooth adapter is not available.");
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             } else {
@@ -419,43 +347,32 @@ public class DeviceList extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_ENABLE_BT) {
             if (resultCode == Activity.RESULT_CANCELED) {
-                Log.d("bgx_dbg","Result canceled.");
+                Log.d(TAG, "Result canceled.");
                 finish();
                 return;
             }
-            Log.d("bgx_dbg", "request enabled");
+
+            Log.d(TAG, "request enabled");
         }
 
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        BGXpressService.startActionStopScan(this);
     }
 
     private void scanForDevices() {
         final Context myContext = this;
 
         mScanResults = new ArrayList<Map<String, String>>();
-
         mDeviceListAdapter = new BGXDeviceListAdapter(getApplicationContext(), mScanResults);
         mDeviceListRecyclerView.swapAdapter(mDeviceListAdapter, true);
 
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Log.d("bgx_dbg", "starting scan");
-
+                Log.d(TAG, "Starting SCAN");
                 BGXpressService.startActionStartScan(myContext);
             }
         }, 200);
-
-
     }
-
-
 
 }
 

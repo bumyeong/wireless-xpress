@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.silabs.bgxcommander;
+package com.bumyeong.rfhook;
 
 import android.content.Context;
 import android.graphics.Color;

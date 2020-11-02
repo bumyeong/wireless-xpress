@@ -7,89 +7,165 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".DeviceDetails"
     tools:showIn="@layout/activity_device_details">
-
-    <RadioButton
-        android:id="@+id/streamRB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/stream_label"
-        app:layout_constraintEnd_toStartOf="@+id/commandRB"
-        app:layout_constraintHorizontal_bias="0.626"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <RadioButton
-        android:id="@+id/commandRB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="72dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/command_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <ImageButton
-        android:id="@+id/clearImageButton"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:contentDescription="@string/ClearButtonExplanation"
-        android:src="@drawable/clear_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/commandRB" />
-
-    <EditText
-        android:id="@+id/streamEditText"
-        android:layout_width="318dp"
-        android:layout_height="174dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:textSize="12sp"
-        android:ems="10"
-        android:inputType="none"
-        android:selectAllOnFocus="false"
-        android:singleLine="false"
-        android:textAlignment="viewStart"
-        android:textIsSelectable="false"
-        android:background="@color/black"
-        android:textColor="@color/white"
-        android:gravity="start"
-        android:cursorVisible="false"
-        android:focusable="false"
-        android:hint="@string/BGXStreamHint"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/commandRB" />
-
-    <EditText
-        android:id="@+id/msgEditText"
-        android:layout_width="251dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="@string/SendMessageBoxHint"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/streamEditText" />
-
-    <Button
-        android:id="@+id/sendButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/send_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/msgEditText"
-        app:layout_constraintTop_toBottomOf="@+id/streamEditText" />
-
+    <TableLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:stretchColumns="*"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" >
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="3"
+                android:background="#F5B296"
+                android:gravity="center_vertical"
+                android:text="    TRANSMIT"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:text="ID" />
+            <EditText
+                android:id="@+id/editTextID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:text="0000"
+                />
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="wrap_content" android:layout_height="30dp"
+                android:layout_span="3" android:background="#FFFFFF" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:text="COMMAND" />
+            <RadioGroup>
+                <RadioButton
+                    android:id="@+id/radioButtonSteady"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="STEADY" />
+                <RadioButton
+                    android:id="@+id/radioButtonBlinking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="BLINKING" />
+            </RadioGroup>
+            <Button
+                android:id="@+id/buttonSend"
+                android:text="SEND"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="wrap_content" android:layout_height="40dp"
+                      android:layout_span="3" android:background="#FFFFFF" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="3"
+                android:background="#A5C3E6"
+                android:gravity="center_vertical"
+                android:text="    RECEIVE"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="wrap_content" android:layout_height="10dp"
+                android:layout_span="3" android:background="#FFFFFF" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:text="ID" />
+            <TextView
+                android:id="@+id/editTextReceiveID1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:textSize="15sp"
+                android:text="" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:textColor="#000000"
+                android:text="STATUS" />
+            <TextView
+                android:id="@+id/editTextReceiveStatus1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:layout_span="2"
+                android:textSize="15sp"
+                android:gravity="center" />
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="wrap_content" android:layout_height="30dp"
+                android:layout_span="3" android:background="#FFFFFF" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:text="ID" />
+            <TextView
+                android:id="@+id/editTextReceiveID2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:textSize="15sp"
+                android:text=""
+                />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:text="STATUS" />
+            <TextView
+                android:id="@+id/editTextReceiveStatus2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:layout_span="2"
+                android:textSize="15sp"
+                android:gravity="center" />
+        </TableRow>
+    </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
