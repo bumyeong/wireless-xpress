@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.silabs.bgxcommander">
+    package="com.bumyeong.batterystarter">
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
+
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <application
@@ -19,8 +19,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <service
-            android:name="com.silabs.bgxcommander.AccountAuthenticator" >
+            android:name="com.bumyeong.batterystarter.AccountAuthenticator" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -31,7 +32,7 @@
         </service>
 
         <service
-            android:name="com.silabs.bgxcommander.AccountAuthenticator2" >
+            android:name="com.bumyeong.batterystarter.AccountAuthenticator2" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -41,19 +42,20 @@
                 android:resource="@xml/ota_authenticator" />
         </service>
 
+        <activity android:name=".Password" />
 
-        <activity android:name=".Password"></activity>
         <activity
             android:name=".FirmwareReleaseNotesActivity"
             android:label="@string/title_activity_firmware_release_notes"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".DeviceList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".DeviceDetails"
             android:label="@string/title_activity_device_details"
@@ -63,11 +65,5 @@
 
         <activity android:name=".FirmwareUpdate" />
 
-
-
-
     </application>
-
-
-
 </manifest>

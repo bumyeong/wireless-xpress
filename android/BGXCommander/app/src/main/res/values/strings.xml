@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Commander</string>
+    <string name="app_name">BATTERY STARTER</string>
     <string name="title_activity_device_details">DeviceDetails</string>
     <string name="stream_label">STREAM</string>
     <string name="command_label">COMMAND</string>

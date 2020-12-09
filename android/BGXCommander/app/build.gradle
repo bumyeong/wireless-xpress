@@ -7,7 +7,7 @@ android {
     }
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.silabs.bgxcommander"
+        applicationId "com.bumyeong.batterystarter"
         minSdkVersion 24
         targetSdkVersion 29
         versionCode 28
