@@ -20,8 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <service
-            android:name="com.bumyeong.batterystarter.AccountAuthenticator" >
+        <service android:name=".AccountAuthenticator">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -31,8 +30,7 @@
                 android:resource="@xml/busmode_authenticator" />
         </service>
 
-        <service
-            android:name="com.bumyeong.batterystarter.AccountAuthenticator2" >
+        <service android:name=".AccountAuthenticator2">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -42,28 +40,37 @@
                 android:resource="@xml/ota_authenticator" />
         </service>
 
-        <activity android:name=".Password" />
-
-        <activity
-            android:name=".FirmwareReleaseNotesActivity"
-            android:label="@string/title_activity_firmware_release_notes"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".DeviceList">
+        <activity android:name=".FullscreenActivity"
+                  android:configChanges="orientation|keyboardHidden|screenSize"
+                  android:theme="@style/AppTheme.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".DeviceDetails"
-            android:label="@string/title_activity_device_details"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Password" />
+
+        <activity android:name=".FirmwareReleaseNotesActivity"
+                  android:label="@string/title_activity_firmware_release_notes"
+                  android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".DeviceList"
+                  android:label="@string/title_activity_device_list"
+                  android:theme="@style/AppTheme.NoActionBar" />
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
+        <activity android:name=".DeviceDetails"
+                  android:label="@string/title_activity_device_details"
+                  android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".IndeterminateProgressActivity" />
 
         <activity android:name=".FirmwareUpdate" />
-
     </application>
+
 </manifest>

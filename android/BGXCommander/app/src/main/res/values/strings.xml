@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">BATTERY STARTER</string>
+
+    <string name="title_activity_device_list">DeviceList</string>
+
     <string name="title_activity_device_details">DeviceDetails</string>
     <string name="stream_label">STREAM</string>
     <string name="command_label">COMMAND</string>
@@ -70,5 +73,8 @@
     <string name="send_with_newline_label">add newline characters on Send</string>
     <string name="useAckdOTA">Use acknowledged data transfers for update</string>
     <string name="Save">Save</string>
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>
