@@ -19,7 +19,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,12 +26,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.silabs.bgxpress.BGX_CONNECTION_STATUS;
 import com.silabs.bgxpress.BGXpressService;
 
 import static com.silabs.bgxpress.BGXpressService.BGX_CONNECTION_ERROR;
 
 public class IndeterminateProgressActivity extends AppCompatActivity {
+    private static final String TAG = "BATTERY_STARTER";
 
     BroadcastReceiver mBroadcastReceiver;
 
@@ -43,6 +45,7 @@ public class IndeterminateProgressActivity extends AppCompatActivity {
     Handler mHandler;
     String mDeviceAddress;
     String mDeviceName;
+    boolean mIsDeviceList;
 
     ImageView mBondImageView;
 
@@ -57,6 +60,7 @@ public class IndeterminateProgressActivity extends AppCompatActivity {
 
         mDeviceAddress = getIntent().getStringExtra("DeviceAddress");
         mDeviceName = getIntent().getStringExtra("DeviceName");
+        mIsDeviceList = getIntent().getBooleanExtra("IsDeviceList", true);
 
         final IndeterminateProgressActivity myActivity = this;
 
@@ -69,7 +73,7 @@ public class IndeterminateProgressActivity extends AppCompatActivity {
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("bgx_dbg", "cancel button clicked.");
+                Log.d(TAG, "cancel button clicked.");
 
                 BGXpressService.startActionBGXCancelConnect(myActivity, mDeviceAddress);
 
@@ -122,7 +126,7 @@ public class IndeterminateProgressActivity extends AppCompatActivity {
                         break;
                     case BGXpressService.BGX_CONNECTION_STATUS_CHANGE: {
                         BGX_CONNECTION_STATUS stateValue = (BGX_CONNECTION_STATUS) intent.getSerializableExtra("bgx-connection-status");
-                        Log.d("bgx_dbg", "BGX Connection State Change: " + stateValue);
+                        Log.d(TAG, "BGX Connection State Change: " + stateValue);
 
 
                         Boolean fBonded = intent.getBooleanExtra("bonded", false);
