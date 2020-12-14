@@ -30,12 +30,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.core.content.pm.PackageInfoCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,6 +39,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.pm.PackageInfoCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.silabs.bgxpress.BGX_CONNECTION_STATUS;
 import com.silabs.bgxpress.BGXpressService;
@@ -56,6 +57,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DeviceList extends AppCompatActivity {
+    private static final String TAG = "BATTERY_STARTER";
 
     private int REQUEST_ENABLE_BT = 1;
     private Handler mHandler;
@@ -138,6 +140,7 @@ public class DeviceList extends AppCompatActivity {
                                 intent2.putExtra("BLUETOOTH_DEVICE", btDevice);
                                 intent2.putExtra("DeviceName", btDevice.getName());
                                 intent2.putExtra("DeviceAddress", btDevice.getAddress());
+                                intent2.putExtra("IsDeviceList", true);
                                 intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                                 BGXpressService.setBGXAcknowledgedReads(btDevice.getAddress(), true);
@@ -210,7 +213,7 @@ public class DeviceList extends AppCompatActivity {
 
         mHandler = new Handler();
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            Log.e("bgx_dbg", "BLE Not Supported.");
+            Log.e(TAG, "BLE Not Supported.");
             finish();
         }
 
@@ -242,7 +245,7 @@ public class DeviceList extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem mi) {
         switch(mi.getItemId()) {
             case R.id.scan_menuitem:
-                Log.d("bgx_dbg", "Scan now");
+                Log.d(TAG, "Scan now");
 
                 // clear the scan list
 
@@ -354,13 +357,13 @@ public class DeviceList extends AppCompatActivity {
             case PERMISSION_REQUEST_COARSE_LOCATION: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission granted, yay! Start the Bluetooth device scan.
-                    Log.d("bgx_dbg", "Received permissions to use location.");
+                    Log.d(TAG, "Received permissions to use location.");
                     fLocationPermissionGranted = true;
                     mLocationPermissionDeniedTextView.setVisibility(View.GONE);
                     mDeviceListRecyclerView.setVisibility(View.VISIBLE);
                 } else {
                     // Alert the user that this application requires the location permission to perform the scan.
-                    Log.e("bgx_dbg", "Did not get permissions to use location.");
+                    Log.e(TAG, "Did not get permissions to use location.");
                     fLocationPermissionGranted = false;
 
                     mLocationPermissionDeniedTextView.setVisibility(View.VISIBLE);
@@ -390,7 +393,7 @@ public class DeviceList extends AppCompatActivity {
 
 
         } catch(Exception e) {
-            Log.d("bgx_dbg", "Exception caught while calling isEnabled.");
+            Log.d(TAG, "Exception caught while calling isEnabled.");
             Toast.makeText(this,"Exception caught", Toast.LENGTH_LONG).show();
         }
 
@@ -401,7 +404,7 @@ public class DeviceList extends AppCompatActivity {
             }
 
             if (null == BluetoothAdapter.getDefaultAdapter() || !fAdapterEnabled) {
-                Log.d("bgx_dbg", "bluetooth adapter is not available.");
+                Log.d(TAG, "bluetooth adapter is not available.");
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             } else {
@@ -419,11 +422,11 @@ public class DeviceList extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_ENABLE_BT) {
             if (resultCode == Activity.RESULT_CANCELED) {
-                Log.d("bgx_dbg","Result canceled.");
+                Log.d(TAG,"Result canceled.");
                 finish();
                 return;
             }
-            Log.d("bgx_dbg", "request enabled");
+            Log.d(TAG, "request enabled");
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -446,7 +449,7 @@ public class DeviceList extends AppCompatActivity {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Log.d("bgx_dbg", "starting scan");
+                Log.d(TAG, "starting scan");
 
                 BGXpressService.startActionStartScan(myContext);
             }

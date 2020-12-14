@@ -27,10 +27,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -47,6 +43,11 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+
 import com.silabs.bgxpress.BGX_CONNECTION_STATUS;
 import com.silabs.bgxpress.BGXpressService;
 import com.silabs.bgxpress.BusMode;
@@ -60,10 +61,12 @@ import static com.bumyeong.batterystarter.TextSource.LOCAL;
 import static com.bumyeong.batterystarter.TextSource.REMOTE;
 
 public class DeviceDetails extends AppCompatActivity {
+    private static final String TAG = "BATTERY_STARTER";
 
    // public BluetoothDevice mBluetoothDevice;
     public String mDeviceAddress;
     public String mDeviceName;
+    public boolean mIsDeviceList;
 
     public Handler mHandler;
 
@@ -150,13 +153,13 @@ public class DeviceDetails extends AppCompatActivity {
                         Integer bootloaderVersion = BGXpressService.getBGXBootloaderVersion(mDeviceAddress);
                         if ( bootloaderVersion >= kBootloaderSecurityVersion) {
 
-                            Log.d("bgx_dbg", "Received DMS Versions.");
+                            Log.d(TAG, "Received DMS Versions.");
 
                             String versionJSON = intent.getStringExtra("versions-available-json");
                             try {
                                 JSONArray myDMSVersions = new JSONArray(versionJSON);
 
-                                Log.d("bgx_dbg", "Device Address: " + mDeviceAddress);
+                                Log.d(TAG, "Device Address: " + mDeviceAddress);
                                 Version vFirmwareRevision = new Version(BGXpressService.getFirmwareRevision(mDeviceAddress));
 
                                 for (int i = 0; i < myDMSVersions.length(); ++i) {
@@ -182,44 +185,49 @@ public class DeviceDetails extends AppCompatActivity {
                     break;
 
                     case BGXpressService.BGX_CONNECTION_STATUS_CHANGE: {
-                        Log.d("bgx_dbg", "BGX Connection State Change");
+                        Log.d(TAG, "BGX Connection State Change");
 
                         BGX_CONNECTION_STATUS connectionState = (BGX_CONNECTION_STATUS) intent.getSerializableExtra("bgx-connection-status");
                         switch (connectionState) {
                             case CONNECTED:
-                                Log.d("bgx_dbg", "DeviceDetails - connection state changed to CONNECTED");
+                                Log.d(TAG, "DeviceDetails - connection state changed to CONNECTED");
                                 break;
                             case CONNECTING:
-                                Log.d("bgx_dbg", "DeviceDetails - connection state changed to CONNECTING");
+                                Log.d(TAG, "DeviceDetails - connection state changed to CONNECTING");
                                 break;
                             case DISCONNECTING:
-                                Log.d("bgx_dbg", "DeviceDetails - connection state changed to DISCONNECTING");
+                                Log.d(TAG, "DeviceDetails - connection state changed to DISCONNECTING");
                                 break;
                             case DISCONNECTED:
-                                Log.d("bgx_dbg", "DeviceDetails - connection state changed to DISCONNECTED");
+                                Log.d(TAG, "DeviceDetails - connection state changed to DISCONNECTED");
                                 finish();
                                 break;
                             case INTERROGATING:
-                                Log.d("bgx_dbg", "DeviceDetails - connection state changed to INTERROGATING");
+                                Log.d(TAG, "DeviceDetails - connection state changed to INTERROGATING");
                                 break;
                             default:
-                                Log.d("bgx_dbg", "DeviceDetails - connection state changed to Unknown connection state.");
+                                Log.d(TAG, "DeviceDetails - connection state changed to Unknown connection state.");
                                 break;
                         }
 
                     }
                     break;
                     case BGXpressService.BGX_MODE_STATE_CHANGE: {
-                        Log.d("bgx_dbg", "BGX Bus Mode Change");
+                        Log.d(TAG, "BGX Bus Mode Change");
                         setBusMode(intent.getIntExtra("busmode", BusMode.UNKNOWN_MODE));
                     }
                     break;
-                    case BGXpressService.BGX_DATA_RECEIVED: {
-                        String stringReceived = intent.getStringExtra("data");
-                        processText(stringReceived, REMOTE);
 
+                    case BGXpressService.BGX_DATA_RECEIVED: {
+//                        String stringReceived = intent.getStringExtra("data");
+//                        processText(stringReceived, REMOTE);
+
+                        //---------------------------------------------
+                        // TODO - IF '0000' ->  Move to ChangePassword
+                        //---------------------------------------------
                     }
                     break;
+
                     case BGXpressService.BGX_DEVICE_INFO: {
 
                         Integer bootloaderVersion = BGXpressService.getBGXBootloaderVersion(mDeviceAddress);
@@ -275,7 +283,7 @@ public class DeviceDetails extends AppCompatActivity {
             public boolean handleMessage(Message msg) {
 
 
-                Log.d("bgx_dbg", "Handle message.");
+                Log.d(TAG, "Handle message.");
 
                 return false;
             }
@@ -316,7 +324,7 @@ public class DeviceDetails extends AppCompatActivity {
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("bgx_dbg", "Send button clicked.");
+                Log.d(TAG, "Send button clicked.");
 
 
                 String msgText = mMessageEditText.getText().toString();
@@ -355,7 +363,7 @@ public class DeviceDetails extends AppCompatActivity {
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("bgx_dbg", "clear");
+                Log.d(TAG, "clear");
                 mStreamEditText.setText("");
             }
         });
@@ -366,6 +374,7 @@ public class DeviceDetails extends AppCompatActivity {
 
         mDeviceName = getIntent().getStringExtra("DeviceName");
         mDeviceAddress = getIntent().getStringExtra("DeviceAddress");
+        mIsDeviceList = getIntent().getBooleanExtra("IsDeviceList", true);
 
         androidx.appcompat.app.ActionBar ab = getSupportActionBar();
         if (null != ab) {
@@ -382,14 +391,28 @@ public class DeviceDetails extends AppCompatActivity {
             }
         });
 
-
         BGXpressService.getBGXDeviceInfo(this, mDeviceAddress);
+
+        // DATA TYPE -> byte[]
+        Intent intentByteMode = new Intent(BGXpressService.ACTION_DATA_DEFINE_DATA_TYPE);
+        intentByteMode.setClass(mContext, BGXpressService.class);
+        intentByteMode.putExtra("mIsTransferDataType", false);
+        startService(intentByteMode);
+
+        if( mIsDeviceList ) {
+            // TODO - Request Password To MCU
+
+        }
+        else {
+            // TODO - Request Vehicle Voltage & Aux Voltage To MCU
+
+        }
     }
 
     @Override
     protected void onDestroy() {
 
-        Log.d("bgx_dbg", "Unregistering the connectionBroadcastReceiver");
+        Log.d(TAG, "Unregistering the connectionBroadcastReceiver");
         unregisterReceiver(mConnectionBroadcastReceiver);
         super.onDestroy();
     }
@@ -410,7 +433,7 @@ public class DeviceDetails extends AppCompatActivity {
 
         switch(mi.getItemId()) {
             case R.id.update_menuitem: {
-                Log.d("bgx_dbg", "Update menu item pressed.");
+                Log.d(TAG, "Update menu item pressed.");
 
                 String api_key = null;
                 try {
@@ -505,7 +528,7 @@ public class DeviceDetails extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Log.d("bgx_dbg", "Back button pressed.");
+        Log.d(TAG, "Back button pressed.");
         disconnect();
 
         finish();
