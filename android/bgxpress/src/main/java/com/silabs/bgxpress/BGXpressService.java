@@ -155,8 +155,7 @@ public class BGXpressService extends IntentService {
     /**
      * Writes data to the BGX.
      *
-     * value - String - the data to be written. ( if mIsTransferDataType == true )
-     * valueBytes - byte[] - the data to be written. ( if mIsTransferDataType == false )
+     * value - String - the data to be written.
      */
     public static final String ACTION_WRITE_SERIAL_DATA = "com.silabs.bgx.action.WriteSerialData";
 
@@ -805,36 +804,18 @@ public class BGXpressService extends IntentService {
                                 synchronized (dataWriteSync) {
 
                                     try {
-                                        if( mIsTransferDataType == true ) {
-                                            String string2Write = intent.getStringExtra("value");
-                                            if (null == mData2Write) {
-                                                mData2Write = string2Write.getBytes();
-                                                mWriteOffset = 0;
-                                            } else {
-                                                ByteArrayOutputStream output = new ByteArrayOutputStream();
+                                        String string2Write = intent.getStringExtra("value");
+                                        if (null == mData2Write) {
+                                            mData2Write = string2Write.getBytes();
+                                            mWriteOffset = 0;
+                                        } else {
+                                            ByteArrayOutputStream output = new ByteArrayOutputStream();
 
-                                                output.write(mData2Write);
-                                                output.write(string2Write.getBytes());
+                                            output.write(mData2Write);
+                                            output.write(string2Write.getBytes());
 
-                                                mData2Write = output.toByteArray();
-                                                Log.d("bgx_dbg", "Queued "+string2Write.length()+"bytes Total: "+output.size()+" bytes");
-                                            }
-                                        }
-                                        else {
-                                            byte[] byte2Write = intent.getByteArrayExtra("valueBytes");
-                                            if ( null == mData2Write ) {
-                                                mData2Write = byte2Write;
-                                                mWriteOffset = 0;
-                                            }
-                                            else {
-                                                ByteArrayOutputStream output = new ByteArrayOutputStream();
-
-                                                output.write(mData2Write);
-                                                output.write(byte2Write);
-
-                                                mData2Write = output.toByteArray();
-                                                Log.d("bgx_dbg", "Queued "+byte2Write.length+",bytes Total: "+output.size()+" bytes");
-                                            }
+                                            mData2Write = output.toByteArray();
+                                            Log.d("bgx_dbg", "Queued "+string2Write.length()+"bytes Total: "+output.size()+" bytes");
                                         }
                                     } catch (IOException exception) {
                                         Log.e("bgx_dbg", exception.getLocalizedMessage());
