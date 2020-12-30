@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.silabs.bgxcommander;
+package com.bumyeong.bgx13p;
 
 public class Version extends Object implements Comparable {
 

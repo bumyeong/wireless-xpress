@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.silabs.bgxcommander;
+package com.bumyeong.bgx13p;
 
 import android.Manifest;
 import android.app.Activity;
@@ -300,7 +300,7 @@ public class DeviceList extends AppCompatActivity {
                 return true;
             }
             case R.id.options_menuitem: {
-                final SharedPreferences sp = mContext.getSharedPreferences("com.silabs.bgxcommander", MODE_PRIVATE);
+                final SharedPreferences sp = mContext.getSharedPreferences("com.bumyeong.bgx13p", MODE_PRIVATE);
                 Boolean fNewLinesOnSendValue =  sp.getBoolean("newlinesOnSend", true);
                 Boolean fUseAckdWritesForOTA = sp.getBoolean("useAckdWritesForOTA", true);
 

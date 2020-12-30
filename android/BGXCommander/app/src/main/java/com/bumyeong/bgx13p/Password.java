@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.silabs.bgxcommander;
+package com.bumyeong.bgx13p;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;

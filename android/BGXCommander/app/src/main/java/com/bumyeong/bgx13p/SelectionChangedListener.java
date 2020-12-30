@@ -11,10 +11,10 @@
  * limitations under the License.
  */
 
-package com.silabs.bgxcommander;
+package com.bumyeong.bgx13p;
 
-public enum TextSource {
-    UNKNOWN,
-    REMOTE,
-    LOCAL
+import org.json.JSONObject;
+
+public interface SelectionChangedListener {
+    public void selectionDidChange(int position, JSONObject selectedObject);
 }

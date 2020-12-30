@@ -12,7 +12,7 @@
  */
 
 
-package com.silabs.bgxcommander;
+package com.bumyeong.bgx13p;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;

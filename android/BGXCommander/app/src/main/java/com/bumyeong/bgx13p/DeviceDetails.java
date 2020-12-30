@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.silabs.bgxcommander;
+package com.bumyeong.bgx13p;
 
 import android.accounts.AccountManager;
 import android.app.Dialog;
@@ -55,9 +55,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.silabs.bgxcommander.PasswordKind.BusModePasswordKind;
-import static com.silabs.bgxcommander.TextSource.LOCAL;
-import static com.silabs.bgxcommander.TextSource.REMOTE;
+import static com.bumyeong.bgx13p.PasswordKind.BusModePasswordKind;
+import static com.bumyeong.bgx13p.TextSource.LOCAL;
+import static com.bumyeong.bgx13p.TextSource.REMOTE;
 
 public class DeviceDetails extends AppCompatActivity {
 
@@ -332,7 +332,7 @@ public class DeviceDetails extends AppCompatActivity {
 
                 String msg2Send;
 
-                final SharedPreferences sp = mContext.getSharedPreferences("com.silabs.bgxcommander", MODE_PRIVATE);
+                final SharedPreferences sp = mContext.getSharedPreferences("com.bumyeong.bgx13p", MODE_PRIVATE);
                 Boolean fNewLinesOnSendValue =  sp.getBoolean("newlinesOnSend", true);
 
                 if (fNewLinesOnSendValue) {
@@ -454,7 +454,7 @@ public class DeviceDetails extends AppCompatActivity {
             }
                 break;
             case R.id.options_menuitem: {
-                final SharedPreferences sp = mContext.getSharedPreferences("com.silabs.bgxcommander", MODE_PRIVATE);
+                final SharedPreferences sp = mContext.getSharedPreferences("com.bumyeong.bgx13p", MODE_PRIVATE);
                 Boolean fNewLinesOnSendValue =  sp.getBoolean("newlinesOnSend", true);
                 Boolean fUseAckdWritesForOTA = sp.getBoolean("useAckdWritesForOTA", true);
 
@@ -591,7 +591,7 @@ public class DeviceDetails extends AppCompatActivity {
 
         SpannableStringBuilder ssb = new SpannableStringBuilder();
 
-        final SharedPreferences sp = mContext.getSharedPreferences("com.silabs.bgxcommander", MODE_PRIVATE);
+        final SharedPreferences sp = mContext.getSharedPreferences("com.bumyeong.bgx13p", MODE_PRIVATE);
         Boolean fNewLinesOnSendValue =  sp.getBoolean("newlinesOnSend", true);
 
         switch (ts) {
