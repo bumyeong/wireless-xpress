@@ -14,11 +14,14 @@
 package com.silabs.bgxpress;
 
 import android.app.IntentService;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
+import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
@@ -27,42 +30,37 @@ import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.Intent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Parcel;
 import android.os.ParcelUuid;
 import android.util.Log;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothAdapter;
-import android.os.Handler;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.HashMap;
-import java.net.URL;
-import java.lang.String;
-import java.net.MalformedURLException;
-import java.io.BufferedInputStream;
-import java.io.InputStream;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -73,7 +71,6 @@ import static android.bluetooth.BluetoothDevice.BOND_NONE;
 import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_NOTIFY;
 import static android.bluetooth.BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT;
 import static android.bluetooth.BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE;
-
 import static android.bluetooth.BluetoothProfile.GATT;
 import static com.silabs.bgxpress.BGX_CONNECTION_STATUS.INTERROGATING;
 import static java.lang.Math.toIntExact;
@@ -239,6 +236,16 @@ public class BGXpressService extends IntentService {
     public static final String ACTION_OTA_CANCEL     = "com.silabs.bgx.action.OTA.cancel";
 
     /**
+     * ACTION_DATA_DEFINE_DATA_TYPE
+     *
+     * Indicates that data type for translation.
+     *
+     * Extras:
+     * mIsTransferDataType - boolean - String(true) , byte[](false).
+     */
+    public static final String ACTION_DATA_DEFINE_DATA_TYPE = "com.silabs.bgx.action.DefineDataType";
+
+    /**
      * BGX_CONNECTION_STATUS_CHANGE
      *
      * Sent to indicate a connection status change.
@@ -275,10 +282,11 @@ public class BGXpressService extends IntentService {
     /**
      * BGX_DATA_RECEIVED
      *
-     * Indicates that data was received.
+     * Indicates that data(String) was received.
      *
      * Extras:
-     * data - String - contains the data that was received from the BGX.
+     * data - String - contains the data that was received from the BGX. ( if mIsTransferDataType == true )
+     * dataBytes - byte[] - contains the data that was received from the BGX. ( if mIsTransferDataType == false )
      * DeviceAddress - String - the address of the BGX that received data.
      */
     public static final String BGX_DATA_RECEIVED            = "com.silabs.bgx.intent.data-received";
@@ -449,6 +457,12 @@ public class BGXpressService extends IntentService {
         ,WritingOTAImage
         ,WriteThreeToControlCharacteristic
     };
+
+    /**
+     * define Data Type.
+     * true - String , false - byte[]
+     */
+    private static boolean mIsTransferDataType = true;
 
     /**
      * These are internal actions for intents that are queued internally to handle BGX setup operations.
@@ -1631,19 +1645,26 @@ public class BGXpressService extends IntentService {
                     sendBroadcast(intent);
                     Log.d("bgx_dbg", "BusMode: " + BusMode);
                 } else if (mTxCharacteristic == characteristic || mTxCharacteristic2 == characteristic) {
+                    int bytesReceived = 0;
+                    Intent intent = new Intent(BGX_DATA_RECEIVED);
 
-                    final String myValue = mTxCharacteristic.getStringValue(0);
+                    if( mIsTransferDataType == true ) {
+                        final String myValue = mTxCharacteristic.getStringValue(0);
+                        bytesReceived = myValue.length();
+                        intent.putExtra("data", myValue);
+                    }
+                    else {
+                        final byte[] myValue = mTxCharacteristic.getValue();
+                        bytesReceived = myValue.length;
+                        intent.putExtra("dataBytes", myValue);
+                    }
 
-                    int bytesReceived = myValue.length();
+                    intent.putExtra("DeviceAddress", gatt.getDevice().getAddress());
+                    sendBroadcast(intent);
 
                     if (mFastAck) {
                         mFastAckRxBytes -= bytesReceived;
                     }
-
-                    Intent intent = new Intent(BGX_DATA_RECEIVED);
-                    intent.putExtra("data", myValue);
-                    intent.putExtra("DeviceAddress", gatt.getDevice().getAddress());
-                    sendBroadcast(intent);
 
                     if (mFastAck) {
                         updateFastAckRxBytes(1, bytesReceived);
@@ -2493,6 +2514,8 @@ public class BGXpressService extends IntentService {
                 String platFormID = (String) intent.getStringExtra("bgx-platform-identifier");
 
                 handleActionGetDMSVersions(apiKey, partID, partIdentifier, platFormID);
+            } else if (ACTION_DATA_DEFINE_DATA_TYPE.equals(action)) {
+                mIsTransferDataType = intent.getBooleanExtra("mIsTransferDataType", true);
             }  else if (null != action) {
 
                 if (null == dps) {
