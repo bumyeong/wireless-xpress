@@ -77,4 +77,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
+    <string name="title_activity_change_password">Change Default Password</string>
+    <string name="password_first">Password</string>
+    <string name="password_second">Confirm</string>
 </resources>

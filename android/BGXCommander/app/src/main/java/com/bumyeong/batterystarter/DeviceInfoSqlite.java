@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import java.util.Date;
+
 public class DeviceInfoSqlite {
     private static final String TAG = "BATTERY_STARTER";
     private static DeviceInfoSqlite mInstance = null;
@@ -18,8 +20,6 @@ public class DeviceInfoSqlite {
             + "  MAC_ADDRESS TEXT, "
             + "  IS_DELETE INTEGER, "
             + "  CHANGE_DATE LONG );";
-    private final String SQL_COUNT = "SELECT COUNT(*) AS COUNTER FROM DEVICE_INFO "
-            + " WHERE IS_DELETE = 0 ";
 
     private SQLiteDatabase mDB = null;
     Context mContext = null;
@@ -46,15 +46,14 @@ public class DeviceInfoSqlite {
     private DeviceInfoSqlite(Context context) {
         mContext = context;
         mDB = context.openOrCreateDatabase(DATABASE_NAME, context.MODE_PRIVATE, null);
-
         mDB.execSQL(SQL_CREATE);
     }
 
-    public int getDataCounter() {
+    private int getSQLCounter(String SQL) {
         int result = 0;
 
         try {
-            Cursor rd = mDB.rawQuery(SQL_COUNT, null);
+            Cursor rd = mDB.rawQuery(SQL, null);
 
             if( rd != null ) {
                 rd.moveToFirst();
@@ -66,7 +65,46 @@ public class DeviceInfoSqlite {
             Log.e(TAG, ex.getMessage());
         }
 
-        Log.d(TAG, "getDataCounter() return " + result);
+        Log.d(TAG, "getSQLCounter() return " + result);
         return result;
     }
+
+    public int getDataCounter() {
+        String SQL_COUNT = "SELECT COUNT(*) AS COUNTER FROM DEVICE_INFO WHERE IS_DELETE = 0;";
+        return getSQLCounter(SQL_COUNT);
+    }
+
+    private int getDataCounter(String name, String address) {
+        String sql = "SELECT COUNT(*) FROM DEVICE_INFO WHERE IS_DELETE = 0 "
+                + "AND NAME = '" + name + "' "
+                + "AND MAC_ADDRESS = '" + address +"'; ";
+        return getSQLCounter(sql);
+    }
+
+    private void updateTime(String name, String address) {
+        long datetime = new Date().getTime();
+        String sql = "UPDATE DEVICE_INFO SET CHANGE_DATE = " + datetime + " WHERE IS_DELETE = 0 "
+                + "AND NAME = '" + name + "' "
+                + "AND MAC_ADDRESS = '" + address +"'; ";
+        mDB.execSQL(sql);
+    }
+
+    private void insertNewDevice(String name, String address) {
+        long datetime = new Date().getTime();
+        String sql = "INSERT INTO DEVICE_INFO(NAME, MAC_ADDRESS, IS_DELETE, CHANGE_DATE) VALUES ('"
+                + name + "' , '" + address + "' , 0 , " + datetime + ");";
+        mDB.execSQL(sql);
+    }
+
+    public void UpdateDevcieInfoSQLite(String name, String address) {
+        if( getDataCounter(name, address) == 0 ) {
+            Log.d(TAG, "NEW DEVICE - " + name + "," + address);
+            insertNewDevice(name, address);
+        }
+        else  {
+            Log.d(TAG, "UPDATE DEVICE - " + name + "," + address);
+            updateTime(name, address);
+        }
+    }
+
 }

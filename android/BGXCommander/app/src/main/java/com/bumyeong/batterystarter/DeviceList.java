@@ -458,8 +458,6 @@ public class DeviceList extends AppCompatActivity {
 
     }
 
-
-
 }
 
 

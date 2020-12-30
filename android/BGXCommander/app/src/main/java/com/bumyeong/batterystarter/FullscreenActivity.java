@@ -94,7 +94,9 @@ public class FullscreenActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else {
+                    // -----------------------------------
                     // TODO - goto to pairing acivity
+                    // -----------------------------------
                 }
             }
         };

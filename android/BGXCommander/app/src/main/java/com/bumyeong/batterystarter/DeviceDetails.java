@@ -14,6 +14,7 @@
 package com.bumyeong.batterystarter;
 
 import android.accounts.AccountManager;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -43,6 +44,7 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -222,9 +224,7 @@ public class DeviceDetails extends AppCompatActivity {
 //                        String stringReceived = intent.getStringExtra("data");
 //                        processText(stringReceived, REMOTE);
 
-                        //---------------------------------------------
-                        // TODO - IF '0000' ->  Move to ChangePassword
-                        //---------------------------------------------
+                        ProcessResponseData( intent.getByteArrayExtra("dataBytes"));
                     }
                     break;
 
@@ -400,8 +400,12 @@ public class DeviceDetails extends AppCompatActivity {
         startService(intentByteMode);
 
         if( mIsDeviceList ) {
-            // TODO - Request Password To MCU
-
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    RequestPassword();
+                }
+            });
         }
         else {
             // TODO - Request Vehicle Voltage & Aux Voltage To MCU
@@ -652,11 +656,111 @@ public class DeviceDetails extends AppCompatActivity {
             myByteArray[i] = (byte)i;
         }
 
+        send2BtDevice(myByteArray);
+    }
+
+    private void send2BtDevice(byte[] datas) {
         Intent writeIntent = new Intent(BGXpressService.ACTION_WRITE_SERIAL_BIN_DATA);
-        writeIntent.putExtra("value", myByteArray);
+        writeIntent.putExtra("value", datas);
         writeIntent.setClass(mContext, BGXpressService.class);
         writeIntent.putExtra("DeviceAddress", mDeviceAddress);
         startService(writeIntent);
     }
 
+    private void RequestPassword() {
+        byte[] request = new byte[] {COMMAND_DEFINE.COMMAND_REQUEST_PASSWORD, (byte)0x00};
+        send2BtDevice(request);
+    }
+
+    public static final int PASSWORD_DEFAULT_SIZE = 4;
+    public static final int REQUEST_CHANGE_PASSWORD = 1;
+    public static final int REQUEST_VERIFY_PASSWORD = 10;
+
+    private String mVerifyPassword = "";
+
+    private void ProcessResponseData( byte[] datas) {
+        switch( datas[COMMAND_DEFINE.POS_COMMAND] ) {
+            case COMMAND_DEFINE.COMMAND_RESPONSE_PASSWORD: {
+                int size = (int)datas[COMMAND_DEFINE.POS_SIZE];
+                boolean isResult = true;
+
+                if( PASSWORD_DEFAULT_SIZE == size ) {
+                    for(int i=0; i < size; i++) {
+                        if((int)datas[COMMAND_DEFINE.POS_DATA_START + i] != 0) {
+                            isResult = false;
+                        }
+                    }
+                }
+                else {
+                    isResult = false;
+                }
+
+                if( isResult == true ) {
+                    // 처음 암호를 설정
+                    Intent intent = new Intent(getApplicationContext(), ChangePasswordActivity.class);
+                    startActivityForResult(intent, REQUEST_CHANGE_PASSWORD);
+                }
+                else {
+                    // 이미 설정한 암호가 있음.
+                    StringBuilder builder = new StringBuilder();
+                    for( int i = 0; i < size; i++ ) {
+                        builder.append(String.valueOf(datas[COMMAND_DEFINE.POS_DATA_START + i]));
+                    }
+
+                    mVerifyPassword = builder.toString();
+                    Log.d(TAG, "Password : " + mVerifyPassword);
+
+                    Intent intent = new Intent(getApplicationContext(), VerifyPasswordActivity.class);
+                    startActivityForResult(intent, REQUEST_VERIFY_PASSWORD);
+                }
+            }
+            break;
+
+            case COMMAND_DEFINE.COMMAND_RESPONSE_CHANGE_PASSWORD: {
+
+            }
+            break;
+
+            default: {
+                Log.e(TAG, Thread.currentThread().getStackTrace()[2]
+                        + "():Unknown Value-" + String.valueOf((int)datas[COMMAND_DEFINE.POS_COMMAND]));
+            }
+            break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == Activity.RESULT_CANCELED) {
+            Log.e(TAG,Thread.currentThread().getStackTrace()[2] + "():Result canceled.");
+            finish();
+            return;
+        }
+
+        if (requestCode == REQUEST_CHANGE_PASSWORD) {
+            String inputPassword = data.getStringExtra("change_password");
+
+            byte[] packet = new byte [ inputPassword.length() + 2 ];
+            packet[COMMAND_DEFINE.POS_COMMAND] = COMMAND_DEFINE.COMMAND_CHANGE_PASSWORD;
+            packet[COMMAND_DEFINE.POS_SIZE] = (byte)inputPassword.length();
+
+            byte[] baPassword = inputPassword.getBytes();
+            for( int i = 0; i < baPassword.length; i++ ) {
+                packet[COMMAND_DEFINE.POS_DATA_START + i] = baPassword[i];
+            }
+
+            send2BtDevice(packet);
+        }
+        else if(requestCode == REQUEST_VERIFY_PASSWORD) {
+            String inputPassword = data.getStringExtra("verify_password");
+            Log.d(TAG, "Password : " + mVerifyPassword);
+
+            if( mVerifyPassword.equals(inputPassword) == false ) {
+                Intent intent = new Intent(getApplicationContext(), VerifyPasswordActivity.class);
+                startActivityForResult(intent, REQUEST_VERIFY_PASSWORD);
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }
