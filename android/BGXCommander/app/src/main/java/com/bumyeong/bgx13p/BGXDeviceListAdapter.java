@@ -19,12 +19,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.silabs.bgxpress.BGXpressService;
 
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BGXDeviceListAdapter extends RecyclerView.Adapter<BGXDeviceListAdapter.ViewHolder> {
+    private final static String TAG = "bgx_dbg"; //DeviceList.class.getSimpleName();
 
     private Context context;
     private ArrayList<HashMap<String, String>> mDataset;
@@ -98,7 +100,7 @@ public class BGXDeviceListAdapter extends RecyclerView.Adapter<BGXDeviceListAdap
         @Override
         public void onClick(View v) {
 
-            Log.d("bgx_dbg", "Selected "+mDeviceNameTextView.getText()+" "+uuidTextView.getText());
+            Log.d(TAG, "Selected "+mDeviceNameTextView.getText()+" "+uuidTextView.getText());
 
             Intent intent2 = new Intent(context, IndeterminateProgressActivity.class);
             intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
