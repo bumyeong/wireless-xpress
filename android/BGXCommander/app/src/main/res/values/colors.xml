@@ -8,4 +8,6 @@
     <color name="textColor">#828282</color>
     <color name="black_overlay">#66000000</color>
     <color name="light_gray">#ddd</color>
+    <color name="colorPink">#F699CD</color>
+    <color name="colorHotPink">#FF1694</color>
 </resources>
