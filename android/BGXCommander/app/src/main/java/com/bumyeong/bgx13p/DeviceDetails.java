@@ -48,6 +48,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
+import com.bw.ydb.widgets.TextProgressBar;
+import com.bw.yml.YModem;
+import com.bw.yml.YModemListener;
 import com.silabs.bgxpress.BGX_CONNECTION_STATUS;
 import com.silabs.bgxpress.BGXpressService;
 import com.silabs.bgxpress.BusMode;
@@ -62,6 +65,11 @@ import static com.bumyeong.bgx13p.TextSource.REMOTE;
 
 public class DeviceDetails extends AppCompatActivity {
     private final static String TAG = "bgx_dbg"; //DeviceList.class.getSimpleName();
+
+    private YModem mYModem;
+    private TextProgressBar mUpdateProgressBar;
+    private boolean mIsSendData;
+    private boolean mIsFWUpdate;
 
    // public BluetoothDevice mBluetoothDevice;
     public String mDeviceAddress;
@@ -98,12 +106,15 @@ public class DeviceDetails extends AppCompatActivity {
 
     final static Integer kBootloaderSecurityVersion = 1229;
 
+    private boolean mIsTransferDataType = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
 
-
+        mIsSendData = false;
+        mIsFWUpdate = false;
 
         mBusMode = BusMode.UNKNOWN_MODE;
 
@@ -173,6 +184,7 @@ public class DeviceDetails extends AppCompatActivity {
                                     }
                                 }
 
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             } catch (RuntimeException e) {
@@ -217,9 +229,21 @@ public class DeviceDetails extends AppCompatActivity {
                     }
                     break;
                     case BGXpressService.BGX_DATA_RECEIVED: {
-                        String stringReceived = intent.getStringExtra("data");
-                        processText(stringReceived, REMOTE);
+                        if( mIsTransferDataType ) {
+                            String stringReceived = intent.getStringExtra("data");
+                            processText(stringReceived, REMOTE);
+                        }
+                        else {
+                            byte[] data = intent.getByteArrayExtra("dataBytes");
 
+                            if( mIsFWUpdate ) {
+                                mIsSendData = true;
+                                mYModem.onReceiveData(data);
+                            }
+                            else {
+                                Log.e(TAG, "BGX binary data receiver : " + data.length);
+                            }
+                        }
                     }
                     break;
                     case BGXpressService.BGX_DEVICE_INFO: {
@@ -390,8 +414,12 @@ public class DeviceDetails extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-
         Log.d(TAG, "Unregistering the connectionBroadcastReceiver");
+
+        if(mYModem != null) {
+            mYModem.stop();
+        }
+
         unregisterReceiver(mConnectionBroadcastReceiver);
         super.onDestroy();
     }
@@ -474,7 +502,6 @@ public class DeviceDetails extends AppCompatActivity {
                 saveButton.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-
                         Boolean fValue = newLineCB.isChecked();
                         Boolean fValue2 = otaAckdWrites.isChecked();
 
@@ -500,6 +527,38 @@ public class DeviceDetails extends AppCompatActivity {
                 optionsDialog.show();
             }
             break;
+
+            case R.id.fwupdate_menuitem: {
+                final Dialog updateDialog = new Dialog(this);
+                updateDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                updateDialog.setContentView(R.layout.fw_update_ymodem);
+
+                Button btnStart = (Button)updateDialog.findViewById(R.id.fwupdate_start_btn);
+                btnStart.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mIsFWUpdate = true;
+                        startYModem();
+                    }
+                });
+
+                Button btnCancel = (Button)updateDialog.findViewById(R.id.fwupdate_cancel_btn);
+                btnCancel.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        if(mYModem != null) {
+                            mYModem.stop();
+                        }
+
+                        updateDialog.dismiss();
+                    }
+                });
+
+                mUpdateProgressBar = (TextProgressBar)updateDialog.findViewById(R.id.mUpgradeBar);
+
+                updateDialog.show();
+            }
+            break;
         }
 
         return super.onOptionsItemSelected(mi);
@@ -508,10 +567,13 @@ public class DeviceDetails extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Log.d(TAG, "Back button pressed.");
+        if(mYModem != null) {
+            mYModem.stop();
+        }
+
         disconnect();
 
         finish();
-
         super.onBackPressed();
     }
 
@@ -638,4 +700,78 @@ public class DeviceDetails extends AppCompatActivity {
         startService(writeIntent);
     }
 
+    private void startYModem() {
+        if( mYModem != null ) {
+            mYModem.stop();
+        }
+
+        setBleDataTypeBinary();
+
+        mIsSendData = true;
+        mYModem = new YModem.Builder()
+                .with(this)
+                .filePath("assets://simple.bin")
+                .fileName("simple.bin")
+                .checkMd5("")
+                .sendSize(1024)
+                .callback(new YModemListener() {
+                    @Override
+                    public void onDataReady(byte[] data) {
+                        if(mIsSendData) {
+                            Intent writeIntent = new Intent(BGXpressService.ACTION_WRITE_SERIAL_BIN_DATA);
+                            writeIntent.setClass(mContext, BGXpressService.class);
+                            writeIntent.putExtra("value", data);
+                            writeIntent.putExtra("DeviceAddress", mDeviceAddress);
+                            startService(writeIntent);
+                            mIsSendData = false;
+                        }
+                    }
+
+                    @Override
+                    public void onProgress(int currentSent, int total) {
+                        float currentPt = (float)currentSent/total;
+                        int a = (int)(currentPt*100);
+
+                        mUpdateProgressBar.setProgress(currentSent);   // Main Progress
+                        mUpdateProgressBar.setMax(total); // Maximum Progress
+
+                        if(a <= 100){
+                            mUpdateProgressBar.setProgressText(""+a+"%");
+                        }else{
+                            mUpdateProgressBar.setProgressText("100%");
+                        }
+                    }
+
+                    @Override
+                    public void onSuccess() {
+                        setBleDataTypeString();
+                        Toast.makeText(DeviceDetails.this,"YMODEM SUCCESS !",Toast.LENGTH_LONG).show();
+                        mIsFWUpdate = false;
+                    }
+
+                    @Override
+                    public void onFailed(String reason) {
+                        Toast.makeText(DeviceDetails.this,"YMODEM FAILED : " + reason,Toast.LENGTH_LONG).show();
+                    }
+                }).build();
+        mYModem.start();
+    }
+
+    private void setBleDataTypeBinary() {
+        mIsTransferDataType = false;
+
+        Intent typeIntent = new Intent(BGXpressService.ACTION_DATA_DEFINE_DATA_TYPE);
+        typeIntent.setClass(mContext, BGXpressService.class);
+        typeIntent.putExtra("mIsTransferDataType", mIsTransferDataType);
+        startService(typeIntent);
+    }
+
+    private void setBleDataTypeString() {
+        mIsTransferDataType = true;
+
+        Intent typeIntent = new Intent(BGXpressService.ACTION_DATA_DEFINE_DATA_TYPE);
+        typeIntent.setClass(mContext, BGXpressService.class);
+        typeIntent.putExtra("mIsTransferDataType", mIsTransferDataType);
+        startService(typeIntent);
+    }
 }

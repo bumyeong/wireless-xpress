@@ -10,4 +10,10 @@
     <color name="light_gray">#ddd</color>
     <color name="colorPink">#F699CD</color>
     <color name="colorHotPink">#FF1694</color>
+
+    <color name="actionbar_bg_color">#0c377b</color>
+    <color name="grey">#EFEFF4</color>
+    <color name="green">#701ABB00</color>
+    <color name="colorYAHEI">#111111</color>
+
 </resources>
