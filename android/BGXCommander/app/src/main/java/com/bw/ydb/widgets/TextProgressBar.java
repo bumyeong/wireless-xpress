@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.widget.ProgressBar;
 
-import com.bumyeong.bgx13p.R;
+import com.bumyeong.bgx13p.gfinder.R;
 
 
 public class TextProgressBar extends ProgressBar{

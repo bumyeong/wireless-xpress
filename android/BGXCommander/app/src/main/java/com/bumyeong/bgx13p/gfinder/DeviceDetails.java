@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.bumyeong.bgx13p;
+package com.bumyeong.bgx13p.gfinder;
 
 import android.accounts.AccountManager;
 import android.app.Dialog;
@@ -37,10 +37,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -59,9 +56,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.bumyeong.bgx13p.PasswordKind.BusModePasswordKind;
-import static com.bumyeong.bgx13p.TextSource.LOCAL;
-import static com.bumyeong.bgx13p.TextSource.REMOTE;
+import static com.bumyeong.bgx13p.gfinder.PasswordKind.BusModePasswordKind;
+import static com.bumyeong.bgx13p.gfinder.TextSource.LOCAL;
+import static com.bumyeong.bgx13p.gfinder.TextSource.REMOTE;
+import static java.lang.Thread.sleep;
 
 public class DeviceDetails extends AppCompatActivity {
     private final static String TAG = "bgx_dbg"; //DeviceList.class.getSimpleName();
@@ -85,11 +83,22 @@ public class DeviceDetails extends AppCompatActivity {
 
 
     // UI Elements
-    private EditText mStreamEditText;
-    private EditText mMessageEditText;
-    private RadioButton mStreamRB;
-    private RadioButton mCommandRB;
-    private Button mSendButton;
+    private Button mCancelButton;
+    private TextView tvDeviceName;
+    private TextView tvMacAddress;
+    private TextView tvRemainTime;
+    private TextView tvO2Low;
+    private TextView tvO2High;
+    private TextView tvO2Current;
+    private TextView tvCh4Low;
+    private TextView tvCh4High;
+    private TextView tvCh4Current;
+    private TextView tvH2sLow;
+    private TextView tvH2sHigh;
+    private TextView tvH2sCurrent;
+    private TextView tvCombLow;
+    private TextView tvCombHigh;
+    private TextView tvCombCurrent;
 
     private int mBusMode;
 
@@ -118,12 +127,22 @@ public class DeviceDetails extends AppCompatActivity {
 
         mBusMode = BusMode.UNKNOWN_MODE;
 
-        mStreamEditText = (EditText) findViewById(R.id.streamEditText);
-        mMessageEditText = (EditText) findViewById(R.id.msgEditText);
-        mStreamRB = (RadioButton) findViewById(R.id.streamRB);
-        mCommandRB = (RadioButton) findViewById(R.id.commandRB);
-        mSendButton = (Button) findViewById(R.id.sendButton);
-
+        mCancelButton = (Button)findViewById(R.id.btnDeviceDetailsExit);
+        tvDeviceName = (TextView)findViewById(R.id.txtDeviceName);
+        tvMacAddress = (TextView)findViewById(R.id.txtMacAddress);
+        tvRemainTime = (TextView)findViewById(R.id.txtRemainTime);
+        tvO2Low = (TextView)findViewById(R.id.txtO2Low);
+        tvO2High = (TextView)findViewById(R.id.txtO2High);
+        tvO2Current = (TextView)findViewById(R.id.txtO2Current);
+        tvCh4Low = (TextView)findViewById(R.id.txtCH4Low);
+        tvCh4High = (TextView)findViewById(R.id.txtCH4High);
+        tvCh4Current = (TextView)findViewById(R.id.txtCH4Current);
+        tvH2sLow = (TextView)findViewById(R.id.txtH2SLow);
+        tvH2sHigh = (TextView)findViewById(R.id.txtH2SHigh);
+        tvH2sCurrent = (TextView)findViewById(R.id.txtH2SCurrent);
+        tvCombLow = (TextView)findViewById(R.id.txtCombLow);
+        tvCombHigh = (TextView)findViewById(R.id.txtCombHigh);
+        tvCombCurrent = (TextView)findViewById(R.id.txtCombCurrent);
 
         final IntentFilter bgxpressServiceFilter = new IntentFilter(BGXpressService.BGX_CONNECTION_STATUS_CHANGE);
         bgxpressServiceFilter.addAction(BGXpressService.BGX_MODE_STATE_CHANGE);
@@ -293,7 +312,12 @@ public class DeviceDetails extends AppCompatActivity {
 
         registerReceiver(mConnectionBroadcastReceiver, bgxpressServiceFilter);
 
-
+        mCancelButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        } );
 
 
         mHandler = new Handler(new Handler.Callback() {
@@ -306,86 +330,6 @@ public class DeviceDetails extends AppCompatActivity {
                 return false;
             }
         });
-
-
-
-        mSendButton.setEnabled(true);
-        mCommandRB.setEnabled(true);
-        mStreamRB.setEnabled(true);
-
-        mStreamRB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    if (mBusMode != BusMode.STREAM_MODE) {
-                        sendBusMode(BusMode.STREAM_MODE);
-                        setBusMode(BusMode.STREAM_MODE);
-                    }
-                }
-
-            }
-        });
-
-        mCommandRB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    if (mBusMode != BusMode.REMOTE_COMMAND_MODE && mBusMode != BusMode.LOCAL_COMMAND_MODE) {
-                        sendBusMode(BusMode.REMOTE_COMMAND_MODE);
-                        setBusMode(BusMode.REMOTE_COMMAND_MODE);
-                    }
-                }
-
-            }
-        });
-
-        mSendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Send button clicked.");
-
-
-                String msgText = mMessageEditText.getText().toString();
-
-                if (0 == msgText.compareTo("bytetest")) {
-
-                    bytetest();
-                    return;
-                }
-
-                // let's write it.
-                Intent writeIntent = new Intent(BGXpressService.ACTION_WRITE_SERIAL_DATA);
-
-                String msg2Send;
-
-                final SharedPreferences sp = mContext.getSharedPreferences("com.bumyeong.bgx13p", MODE_PRIVATE);
-                Boolean fNewLinesOnSendValue =  sp.getBoolean("newlinesOnSend", true);
-
-                if (fNewLinesOnSendValue) {
-                    msg2Send = msgText + "\r\n";
-                } else {
-                    msg2Send = msgText;
-                }
-
-                writeIntent.putExtra("value", msg2Send );
-                writeIntent.setClass(mContext, BGXpressService.class);
-                writeIntent.putExtra("DeviceAddress", mDeviceAddress);
-                startService(writeIntent);
-
-                processText(msg2Send, LOCAL);
-                mMessageEditText.setText("", EditText.BufferType.EDITABLE);
-            }
-        });
-
-        final ImageButton clearButton = (ImageButton) findViewById(R.id.clearImageButton);
-        clearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "clear");
-                mStreamEditText.setText("");
-            }
-        });
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -405,6 +349,14 @@ public class DeviceDetails extends AppCompatActivity {
                 intent.setClass(mContext, BGXpressService.class);
                 intent.putExtra("DeviceAddress", mDeviceAddress);
                 startService(intent);
+
+                try {
+                    sleep(300);
+                    setBleDataTypeBinary();
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -426,11 +378,11 @@ public class DeviceDetails extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.devicedetails, menu);
-
-        mIconItem = menu.findItem(R.id.icon_menuitem);
-        mUpdateItem = menu.findItem(R.id.update_menuitem);
-        mIconItem.setIcon(null);
+//        getMenuInflater().inflate(R.menu.devicedetails, menu);
+//
+//        mIconItem = menu.findItem(R.id.icon_menuitem);
+//        mUpdateItem = menu.findItem(R.id.update_menuitem);
+//        mIconItem.setIcon(null);
 
         return true;
     }
@@ -484,7 +436,7 @@ public class DeviceDetails extends AppCompatActivity {
             }
                 break;
             case R.id.options_menuitem: {
-                final SharedPreferences sp = mContext.getSharedPreferences("com.bumyeong.bgx13p", MODE_PRIVATE);
+                final SharedPreferences sp = mContext.getSharedPreferences("com.bumyeong.bgx13p.gfinder", MODE_PRIVATE);
                 Boolean fNewLinesOnSendValue =  sp.getBoolean("newlinesOnSend", true);
                 Boolean fUseAckdWritesForOTA = sp.getBoolean("useAckdWritesForOTA", true);
 
@@ -593,31 +545,6 @@ public class DeviceDetails extends AppCompatActivity {
         if (mBusMode != busMode) {
 
             mBusMode = busMode;
-
-
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-
-                    switch (mBusMode) {
-                        case BusMode.UNKNOWN_MODE:
-                            mStreamRB.setChecked(false);
-                            mCommandRB.setChecked(false);
-                            break;
-                        case BusMode.STREAM_MODE:
-                            mStreamRB.setChecked(true);
-                            mCommandRB.setChecked(false);
-
-                            break;
-                        case BusMode.LOCAL_COMMAND_MODE:
-                        case BusMode.REMOTE_COMMAND_MODE:
-                            mStreamRB.setChecked(false);
-                            mCommandRB.setChecked(true);
-                            break;
-                    }
-                }
-            });
-
         }
     }
 
@@ -655,7 +582,7 @@ public class DeviceDetails extends AppCompatActivity {
 
         SpannableStringBuilder ssb = new SpannableStringBuilder();
 
-        final SharedPreferences sp = mContext.getSharedPreferences("com.bumyeong.bgx13p", MODE_PRIVATE);
+        final SharedPreferences sp = mContext.getSharedPreferences("com.bumyeong.bgx13p.gfinder", MODE_PRIVATE);
         Boolean fNewLinesOnSendValue =  sp.getBoolean("newlinesOnSend", true);
 
         switch (ts) {
@@ -676,8 +603,6 @@ public class DeviceDetails extends AppCompatActivity {
                 break;
             }
         }
-
-        mStreamEditText.append(ssb);
 
         mTextSource = ts;
 

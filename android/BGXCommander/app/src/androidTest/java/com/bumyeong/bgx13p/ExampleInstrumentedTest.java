@@ -1,4 +1,4 @@
-package com.bumyeong.bgx13p;
+package com.bumyeong.bgx13p.gfinder;
 
 import android.content.Context;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.bumyeong.bgx13p", appContext.getPackageName());
+        assertEquals("com.bumyeong.bgx13p.gfinder", appContext.getPackageName());
     }
 }

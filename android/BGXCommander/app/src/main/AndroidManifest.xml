@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bumyeong.bgx13p">
+    package="com.bumyeong.bgx13p.gfinder">
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
-            android:name="com.bumyeong.bgx13p.AccountAuthenticator" >
+            android:name="com.bumyeong.bgx13p.gfinder.AccountAuthenticator" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -31,7 +31,7 @@
         </service>
 
         <service
-            android:name="com.bumyeong.bgx13p.AccountAuthenticator2" >
+            android:name="com.bumyeong.bgx13p.gfinder.AccountAuthenticator2" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>

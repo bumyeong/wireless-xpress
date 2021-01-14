@@ -11,10 +11,10 @@
  * limitations under the License.
  */
 
-package com.bumyeong.bgx13p;
+package com.bumyeong.bgx13p.gfinder;
 
-public enum TextSource {
-    UNKNOWN,
-    REMOTE,
-    LOCAL
+import org.json.JSONObject;
+
+public interface SelectionChangedListener {
+    public void selectionDidChange(int position, JSONObject selectedObject);
 }

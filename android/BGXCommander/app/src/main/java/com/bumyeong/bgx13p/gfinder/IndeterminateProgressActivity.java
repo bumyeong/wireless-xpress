@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.bumyeong.bgx13p;
+package com.bumyeong.bgx13p.gfinder;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

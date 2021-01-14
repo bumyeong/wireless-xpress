@@ -12,7 +12,7 @@
  */
 
 
-package com.bumyeong.bgx13p;
+package com.bumyeong.bgx13p.gfinder;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;

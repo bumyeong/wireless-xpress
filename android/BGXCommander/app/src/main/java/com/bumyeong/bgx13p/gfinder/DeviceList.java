@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.bumyeong.bgx13p;
+package com.bumyeong.bgx13p.gfinder;
 
 import android.Manifest;
 import android.app.Activity;
@@ -30,12 +30,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.core.content.pm.PackageInfoCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,6 +39,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.pm.PackageInfoCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.silabs.bgxpress.BGX_CONNECTION_STATUS;
 import com.silabs.bgxpress.BGXpressService;
@@ -230,9 +231,9 @@ public class DeviceList extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-       getMenuInflater().inflate(R.menu.devicelist, menu);
-
-        mScanItem = menu.findItem(R.id.scan_menuitem);
+//       getMenuInflater().inflate(R.menu.devicelist, menu);
+//
+//        mScanItem = menu.findItem(R.id.scan_menuitem);
 
        return true;
     }
@@ -301,7 +302,7 @@ public class DeviceList extends AppCompatActivity {
                 return true;
             }
             case R.id.options_menuitem: {
-                final SharedPreferences sp = mContext.getSharedPreferences("com.bumyeong.bgx13p", MODE_PRIVATE);
+                final SharedPreferences sp = mContext.getSharedPreferences("com.bumyeong.bgx13p.gfinder", MODE_PRIVATE);
                 Boolean fNewLinesOnSendValue =  sp.getBoolean("newlinesOnSend", true);
                 Boolean fUseAckdWritesForOTA = sp.getBoolean("useAckdWritesForOTA", true);
 

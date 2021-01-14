@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.bumyeong.bgx13p;
+package com.bumyeong.bgx13p.gfinder;
 
 import android.accounts.AccountManager;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -51,9 +51,9 @@ import static android.view.View.GONE;
 import static com.silabs.bgxpress.BGXpressService.ACTION_OTA_WITH_IMAGE;
 import static com.silabs.bgxpress.BGXpressService.DMS_VERSION_LOADED;
 import static com.silabs.bgxpress.BGXpressService.OTA_STATUS_MESSAGE;
-import static com.bumyeong.bgx13p.DeviceDetails.kBootloaderSecurityVersion;
-import static com.bumyeong.bgx13p.Password.ACTION_PASSWORD_UPDATED;
-import static com.bumyeong.bgx13p.PasswordKind.OTAPasswordKind;
+import static com.bumyeong.bgx13p.gfinder.DeviceDetails.kBootloaderSecurityVersion;
+import static com.bumyeong.bgx13p.gfinder.Password.ACTION_PASSWORD_UPDATED;
+import static com.bumyeong.bgx13p.gfinder.PasswordKind.OTAPasswordKind;
 
 import com.silabs.bgxpress.BGXpressService;
 import com.silabs.bgxpress.OTA_Status;
@@ -282,7 +282,7 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
 
     public void startOTAUpdate()
     {
-        SharedPreferences sp = mContext.getSharedPreferences("com.bumyeong.bgx13p", MODE_PRIVATE);
+        SharedPreferences sp = mContext.getSharedPreferences("com.bumyeong.bgx13p.gfinder", MODE_PRIVATE);
         Boolean fUseAckdWritesForOTA = sp.getBoolean("useAckdWritesForOTA", true);
 
         int writeType = fUseAckdWritesForOTA ? BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT : BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE;

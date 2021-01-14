@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Commander</string>
+    <string name="app_name">BTLinkAP (G-Finder)</string>
     <string name="title_activity_device_details">DeviceDetails</string>
     <string name="stream_label">STREAM</string>
     <string name="command_label">COMMAND</string>
@@ -20,7 +20,6 @@
     <string name="OTA_Status_Finishing">Updating firmware - Do not disconnect!</string>
     <string name="OTA_Status_Finished">Firmware Update Complete.</string>
     <string name="OTA_Status_PasswordRequired">Password Required</string>
-
     <string name="OTA_Status_UserCanceled">Firmware Update Canceled.</string>
 
     <string name="BluetoothDisabledText">Bluetooth is currently disabled on this device.\n\nEnable Bluetooth in the device settings to continue.</string>
@@ -73,4 +72,16 @@
     <string name="Save">Save</string>
     <string name="Start">Start</string>
 
+    <string name="gfinder_mac">Mac Address</string>
+    <string name="gfinder_remain_time">Remain</string>
+    <string name="gfinder_o2">O2</string>
+    <string name="gfinder_ch4">CH4</string>
+    <string name="gfinder_h2s">H2S</string>
+    <string name="gfinder_co">Comb.</string>
+    <string name="gfinder_txt_blank">        </string>
+    <string name="gfinder_txt_minus">-</string>
+    <string name="gfinder_txt_0">0</string>
+    <string name="gfinder_txt_0_0">0.0</string>
+    <string name="gfinder_txt_00_0">00.0</string>
+    <string name="gfinder_update_time">Update Time</string>
 </resources>
