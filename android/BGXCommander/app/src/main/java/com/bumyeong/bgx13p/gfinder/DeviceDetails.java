@@ -295,11 +295,10 @@ public class DeviceDetails extends AppCompatActivity {
                                             public void run() {
                                                 tvDeviceName.setText(mGFinderComm.getDeviceName());
                                                 tvMacAddress.setText(mGFinderComm.getMacAddress());
-
                                             }
                                         });
 
-                                        sendPacket(Arrays.copyOf(mGFinderComm.getPacketAck(), mGFinderComm.getPacketSize()));
+                                        sendPacket(Arrays.copyOf(mGFinderComm.getPacketAck(), mGFinderComm.getPacketSize()), 1);
 
                                         mRnState = true;
                                         mRnHandler.sendEmptyMessageDelayed(0, 1000);
@@ -307,8 +306,29 @@ public class DeviceDetails extends AppCompatActivity {
                                     break;
 
                                     case GFinderComm.COMMAND_SEND_DATA: {
-                                        mRnState = false;
-                                        sendPacket(Arrays.copyOf(mGFinderComm.getPacketAck(), mGFinderComm.getPacketSize()));
+                                        sendPacket(Arrays.copyOf(mGFinderComm.getPacketAck(), mGFinderComm.getPacketSize()), 1);
+
+                                        if( mGFinderComm.getCommStatus() == GFinderComm.GFINDER_COMM_STATUS.INIT_DATA ) {
+                                            mRnState = false;
+
+                                            mHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    showInitData();
+                                                }
+                                            });
+                                        }
+                                        else if( mGFinderComm.getCommStatus() == GFinderComm.GFINDER_COMM_STATUS.DISCONNECT ) {
+                                            sendPacket(Arrays.copyOf(mGFinderComm.getPacketDisconnect(), mGFinderComm.getPacketSize()), 500);
+                                        }
+                                        else if( mGFinderComm.getCommStatus() == GFinderComm.GFINDER_COMM_STATUS.CURRENT) {
+                                            mHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    showCurrentData();
+                                                }
+                                            });
+                                        }
                                     }
                                     break;
 
@@ -424,7 +444,7 @@ public class DeviceDetails extends AppCompatActivity {
             }
         });
 
-        sendPacket(Arrays.copyOf(mGFinderComm.getPacketConnectionOk(), mGFinderComm.getPacketSize()));
+        sendPacket(Arrays.copyOf(mGFinderComm.getPacketConnectionOk(), mGFinderComm.getPacketSize()), 1);
 
         BGXpressService.getBGXDeviceInfo(this, mDeviceAddress);
     }
@@ -690,8 +710,8 @@ public class DeviceDetails extends AppCompatActivity {
         startService(writeIntent);
     }
 
-    private void sendPacket(final byte[] packet) {
-        mHandler.post(new Runnable() {
+    private void sendPacket(final byte[] packet, long millisec) {
+        mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 Intent writeIntent = new Intent(BGXpressService.ACTION_WRITE_SERIAL_BIN_DATA);
@@ -700,7 +720,7 @@ public class DeviceDetails extends AppCompatActivity {
                 writeIntent.putExtra("value", packet);
                 startService(writeIntent);
             }
-        });
+        }, millisec);
     }
 
     private void startYModem() {
@@ -776,5 +796,20 @@ public class DeviceDetails extends AppCompatActivity {
         typeIntent.setClass(mContext, BGXpressService.class);
         typeIntent.putExtra("mIsTransferDataType", mIsTransferDataType);
         startService(typeIntent);
+    }
+
+    private void showInitData() {
+        tvO2Low.setText(mGFinderComm.getInitDataO2Low());
+        tvO2High.setText(mGFinderComm.getInitDataO2High());
+        tvCh4Low.setText(mGFinderComm.getInitDataCH4Low());
+        tvCh4High.setText(mGFinderComm.getInitDataCH4High());
+        tvH2sLow.setText(mGFinderComm.getInitDataH2SLow());
+        tvH2sHigh.setText(mGFinderComm.getInitDataH2SHigh());
+        tvCombLow.setText(mGFinderComm.getInitDataCoLow());
+        tvCombHigh.setText(mGFinderComm.getInitDataCoHigh());
+    }
+
+    private void showCurrentData() {
+
     }
 }
