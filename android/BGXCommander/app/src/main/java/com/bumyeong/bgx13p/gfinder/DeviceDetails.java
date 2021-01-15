@@ -56,6 +56,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+
 import static com.bumyeong.bgx13p.gfinder.PasswordKind.BusModePasswordKind;
 import static com.bumyeong.bgx13p.gfinder.TextSource.LOCAL;
 import static com.bumyeong.bgx13p.gfinder.TextSource.REMOTE;
@@ -116,6 +118,31 @@ public class DeviceDetails extends AppCompatActivity {
     final static Integer kBootloaderSecurityVersion = 1229;
 
     private boolean mIsTransferDataType = true;
+    private GFinderComm mGFinderComm = new GFinderComm();
+
+    public class rnHandler extends Handler { // (r)ead (n)otification 인듯
+        public rnHandler() {
+        }
+
+        public void handleMessage(Message message) {
+            removeMessages(0);
+
+            byte[] sendData = Arrays.copyOf(mGFinderComm.getPacketRequestInformation(), mGFinderComm.getPacketSize());
+
+            Intent writeIntent = new Intent(BGXpressService.ACTION_WRITE_SERIAL_BIN_DATA);
+            writeIntent.setClass(mContext, BGXpressService.class);
+            writeIntent.putExtra("DeviceAddress", mDeviceAddress);
+            writeIntent.putExtra("value", sendData);
+            startService(writeIntent);
+
+            if (mRnState) {
+                sendEmptyMessageDelayed(0, 1000);
+            }
+        }
+    }
+
+    private rnHandler mRnHandler = new rnHandler();
+    private boolean mRnState = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -260,7 +287,44 @@ public class DeviceDetails extends AppCompatActivity {
                                 mYModem.onReceiveData(data);
                             }
                             else {
-                                Log.e(TAG, "BGX binary data receiver : " + data.length);
+//                                Log.e(TAG, "BGX binary data receiver : " + data.length);
+                                switch(mGFinderComm.parse(data)) {
+                                    case GFinderComm.COMMAND_GF_MAC_NAME: {
+                                        mHandler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                tvDeviceName.setText(mGFinderComm.getDeviceName());
+                                                tvMacAddress.setText(mGFinderComm.getMacAddress());
+
+                                            }
+                                        });
+
+                                        sendPacket(Arrays.copyOf(mGFinderComm.getPacketAck(), mGFinderComm.getPacketSize()));
+
+                                        mRnState = true;
+                                        mRnHandler.sendEmptyMessageDelayed(0, 1000);
+                                    }
+                                    break;
+
+                                    case GFinderComm.COMMAND_SEND_DATA: {
+                                        mRnState = false;
+                                        sendPacket(Arrays.copyOf(mGFinderComm.getPacketAck(), mGFinderComm.getPacketSize()));
+                                    }
+                                    break;
+
+                                    case GFinderComm.COMMAND_ACK: {
+                                    }
+                                    break;
+
+                                    case GFinderComm.COMMAND_UNKNOWN: {
+                                    }
+                                    break;
+
+                                    default: {
+                                        Log.e(TAG, "Unknown return value !!!");
+                                    }
+                                    break;
+                                }
                             }
                         }
                     }
@@ -351,7 +415,7 @@ public class DeviceDetails extends AppCompatActivity {
                 startService(intent);
 
                 try {
-                    sleep(300);
+                    sleep(100);
                     setBleDataTypeBinary();
 
                 } catch (InterruptedException e) {
@@ -360,6 +424,7 @@ public class DeviceDetails extends AppCompatActivity {
             }
         });
 
+        sendPacket(Arrays.copyOf(mGFinderComm.getPacketConnectionOk(), mGFinderComm.getPacketSize()));
 
         BGXpressService.getBGXDeviceInfo(this, mDeviceAddress);
     }
@@ -623,6 +688,19 @@ public class DeviceDetails extends AppCompatActivity {
         writeIntent.setClass(mContext, BGXpressService.class);
         writeIntent.putExtra("DeviceAddress", mDeviceAddress);
         startService(writeIntent);
+    }
+
+    private void sendPacket(final byte[] packet) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Intent writeIntent = new Intent(BGXpressService.ACTION_WRITE_SERIAL_BIN_DATA);
+                writeIntent.setClass(mContext, BGXpressService.class);
+                writeIntent.putExtra("DeviceAddress", mDeviceAddress);
+                writeIntent.putExtra("value", packet);
+                startService(writeIntent);
+            }
+        });
     }
 
     private void startYModem() {
