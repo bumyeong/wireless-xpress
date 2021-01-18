@@ -101,6 +101,7 @@ public class DeviceDetails extends AppCompatActivity {
     private TextView tvCombLow;
     private TextView tvCombHigh;
     private TextView tvCombCurrent;
+    private TextView tvLastTime;
 
     private int mBusMode;
 
@@ -170,6 +171,7 @@ public class DeviceDetails extends AppCompatActivity {
         tvCombLow = (TextView)findViewById(R.id.txtCombLow);
         tvCombHigh = (TextView)findViewById(R.id.txtCombHigh);
         tvCombCurrent = (TextView)findViewById(R.id.txtCombCurrent);
+        tvLastTime = (TextView)findViewById(R.id.txtUpdateTime);
 
         final IntentFilter bgxpressServiceFilter = new IntentFilter(BGXpressService.BGX_CONNECTION_STATUS_CHANGE);
         bgxpressServiceFilter.addAction(BGXpressService.BGX_MODE_STATE_CHANGE);
@@ -810,6 +812,10 @@ public class DeviceDetails extends AppCompatActivity {
     }
 
     private void showCurrentData() {
-
+        tvO2Current.setText(mGFinderComm.getCurrentDataO2());
+        tvCh4Current.setText(mGFinderComm.getCurrentDataCH4());
+        tvH2sCurrent.setText(mGFinderComm.getCurrentDataH2S());
+        tvCombCurrent.setText(mGFinderComm.getCurrentDataCo());
+        tvLastTime.setText(mGFinderComm.getTime());
     }
 }

@@ -2,7 +2,9 @@ package com.bumyeong.bgx13p.gfinder;
 
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 public class GFinderComm {
     private final static String TAG = "bgx_dbg"; //DeviceList.class.getSimpleName();
@@ -50,11 +52,16 @@ public class GFinderComm {
     private final static int POS_INIT_DATA_RESULT_CO_LOW = 6;
     private final static int POS_INIT_DATA_RESULT_CO_HIGH = 7;
 
-    private final static int MAX_DATA_CURRENT_COUNT= 4;
-    private final static int POS_DATA_CURRENT_O2 = 0;
-    private final static int POS_DATA_CURRENT_CH4 = 1;
-    private final static int POS_DATA_CURRENT_H2S = 2;
-    private final static int POS_DATA_CURRENT_CO = 3;
+    private final static int POS_CURRENT_DATA_O2 = 3;
+    private final static int POS_CURRENT_DATA_CH4 = 5;
+    private final static int POS_CURRENT_DATA_H2S = 7;
+    private final static int POS_CURRENT_DATA_CO = 9;
+
+    private final static int MAX_CURRENT_DATA_RESULT_COUNT= 4;
+    private final static int POS_CURRENT_DATA_RESULT_O2 = 0;
+    private final static int POS_CURRENT_DATA_RESULT_CH4 = 1;
+    private final static int POS_CURRENT_DATA_RESULT_H2S = 2;
+    private final static int POS_CURRENT_DATA_RESULT_CO = 3;
 
     private byte[] mPacket;
     private int mPacketSize = 2;
@@ -66,24 +73,27 @@ public class GFinderComm {
     private GFINDER_COMM_STATUS mCommStatus = GFINDER_COMM_STATUS.NONE;
     private String[] mInitDataResult;
     private String[] mDataCurrent;
+    private long mLastTime;
 
     public GFinderComm() {
         mPacket = new byte [MAX_PACKET_SIZE];
         mIsReceive = new boolean[MAX_INIT_DATA_COUNT];
         mInitDataResult = new String [MAX_INIT_DATA_RESULT_COUNT];
-        mDataCurrent = new String [MAX_DATA_CURRENT_COUNT];
+        mDataCurrent = new String [MAX_CURRENT_DATA_RESULT_COUNT];
 
         mInitDataResult[POS_INIT_DATA_RESULT_O2_LOW] = mInitDataResult[POS_INIT_DATA_RESULT_O2_HIGH] = "00.0";
         mInitDataResult[POS_INIT_DATA_RESULT_CH4_LOW] = mInitDataResult[POS_INIT_DATA_RESULT_CH4_HIGH] = "0";
         mInitDataResult[POS_INIT_DATA_RESULT_H2S_LOW] = mInitDataResult[POS_INIT_DATA_RESULT_H2S_HIGH] = "0.0";
         mInitDataResult[POS_INIT_DATA_RESULT_CO_LOW] = mInitDataResult[POS_INIT_DATA_RESULT_CO_HIGH] = "0";
 
-        mDataCurrent[POS_DATA_CURRENT_O2] = "00.0";
-        mDataCurrent[POS_DATA_CURRENT_CH4] = "0";
-        mDataCurrent[POS_DATA_CURRENT_H2S] = "0.0";
-        mDataCurrent[POS_DATA_CURRENT_CO] = "0";
+        mDataCurrent[POS_CURRENT_DATA_RESULT_O2] = "00.0";
+        mDataCurrent[POS_CURRENT_DATA_RESULT_CH4] = "0";
+        mDataCurrent[POS_CURRENT_DATA_RESULT_H2S] = "0.0";
+        mDataCurrent[POS_CURRENT_DATA_RESULT_CO] = "0";
 
         resetReceiveFlag();
+
+        mLastTime = System.currentTimeMillis();
     }
 
     private void resetReceiveFlag() {
@@ -175,6 +185,13 @@ public class GFinderComm {
     public String getInitDataH2SHigh() { return mInitDataResult[POS_INIT_DATA_RESULT_H2S_HIGH]; }
     public String getInitDataCoLow() { return mInitDataResult[POS_INIT_DATA_RESULT_CO_LOW]; }
     public String getInitDataCoHigh() { return mInitDataResult[POS_INIT_DATA_RESULT_CO_HIGH]; }
+    public String getTime() {
+        return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(mLastTime));
+    }
+    public String getCurrentDataO2() { return mDataCurrent[POS_CURRENT_DATA_RESULT_O2]; }
+    public String getCurrentDataCH4() { return mDataCurrent[POS_CURRENT_DATA_RESULT_CH4]; }
+    public String getCurrentDataH2S() { return mDataCurrent[POS_CURRENT_DATA_RESULT_H2S]; }
+    public String getCurrentDataCo() { return mDataCurrent[POS_CURRENT_DATA_RESULT_CO]; }
 
     public byte parse(byte[] data) {
         int length = data[POS_LENGTH];
@@ -248,7 +265,31 @@ public class GFinderComm {
                     }
                 }
                 else if( mCommStatus == GFINDER_COMM_STATUS.CURRENT ) {
+                    long current = System.currentTimeMillis();
 
+                    if( current < mLastTime + 1000 ) {
+                        Log.e(TAG, "Data period is short. LastTime = " +  getTime());
+                        break;
+                    }
+
+                    int result = 0;
+                    mLastTime = current;
+
+                    result = data[POS_CURRENT_DATA_O2] & 0xff;
+                    result += (int)(data[POS_CURRENT_DATA_O2 + 1] & 0xff) << 8;
+                    mDataCurrent[POS_CURRENT_DATA_RESULT_O2] = String.format("%.1f", (float)result / 10);
+
+                    result = data[POS_CURRENT_DATA_CH4] & 0xff;
+                    result += (int)(data[POS_CURRENT_DATA_CH4 + 1] & 0xff) << 8;
+                    mDataCurrent[POS_CURRENT_DATA_RESULT_CH4] = String.valueOf(result);;
+
+                    result = data[POS_CURRENT_DATA_H2S] & 0xff;
+                    result += (int)(data[POS_CURRENT_DATA_H2S + 1] & 0xff) << 8;
+                    mDataCurrent[POS_CURRENT_DATA_RESULT_H2S] = String.valueOf(result);;
+
+                    result = data[POS_CURRENT_DATA_CO] & 0xff;
+                    result += (int)(data[POS_CURRENT_DATA_CO + 1] & 0xff) << 8;
+                    mDataCurrent[POS_CURRENT_DATA_RESULT_CO] = String.format("%.1f", (float)result / 10);
                 }
                 else {
                     Log.e(TAG, "Unknown COMMAND_SEND_DATA,data length:" + String.valueOf(length) );
