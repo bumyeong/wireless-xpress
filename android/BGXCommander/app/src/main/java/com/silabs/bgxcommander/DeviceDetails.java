@@ -20,28 +20,23 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.RadioButton;
-import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.silabs.bgxpress.BGX_CONNECTION_STATUS;
 import com.silabs.bgxpress.BGXpressService;
@@ -51,10 +46,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static com.bumyeong.rfhook.PasswordKind.BusModePasswordKind;
 
@@ -75,14 +67,16 @@ public class DeviceDetails extends AppCompatActivity {
     private RadioButton mRadioButtonSteady;
     private RadioButton mRadioButtonBlinking;
     private Button mButtonSend;
-    private TextView mReceiveID1;
-    private TextView mReceiveStatus1;
-    private TextView mReceiveID2;
-    private TextView mReceiveStatus2;
+
+    private TextView mReceiveID;
+    private TextView mPushSwitchState;
+    private TextView mIrSensorState;
+    private TextView mTouchSensorState;
+    private TextView mBatteryState;
 
     private int mBusMode;
 
-    private TextSource mTextSource = TextSource.UNKNOWN;
+    private com.bumyeong.rfhook.TextSource mTextSource = com.bumyeong.rfhook.TextSource.UNKNOWN;
     private final int kAutoScrollMessage = 0x5C011;
     private final int kAutoScrollDelay = 800; // the time in ms between adding text and autoscroll.
 
@@ -117,10 +111,12 @@ public class DeviceDetails extends AppCompatActivity {
         mRadioButtonSteady = (RadioButton) findViewById(R.id.radioButtonSteady);
         mRadioButtonBlinking = (RadioButton) findViewById(R.id.radioButtonBlinking);
         mButtonSend = (Button) findViewById(R.id.buttonSend);
-        mReceiveID1 = (TextView) findViewById(R.id.editTextReceiveID1);
-        mReceiveStatus1 = (TextView) findViewById(R.id.editTextReceiveStatus1);
-        mReceiveID2 = (TextView) findViewById(R.id.editTextReceiveID2);
-        mReceiveStatus2 = (TextView) findViewById(R.id.editTextReceiveStatus2);
+
+        mReceiveID = (TextView)findViewById(R.id.editTextReceiveID);
+        mPushSwitchState = (TextView)findViewById(R.id.textviewPushSwitchState);
+        mIrSensorState = (TextView)findViewById(R.id.textviewIrSensorState);
+        mTouchSensorState = (TextView)findViewById(R.id.textviewTouchSensorState);
+        mBatteryState = (TextView)findViewById(R.id.textviewBatteryState);
 
         mBusMode = BusMode.UNKNOWN_MODE;
 
@@ -174,12 +170,12 @@ public class DeviceDetails extends AppCompatActivity {
                             JSONArray myDMSVersions = new JSONArray(versionJSON);
 
                             Log.d(TAG, "Device Address: " + mDeviceAddress);
-                            Version vFirmwareRevision = new Version(BGXpressService.getFirmwareRevision(mDeviceAddress));
+                            com.bumyeong.rfhook.Version vFirmwareRevision = new com.bumyeong.rfhook.Version(BGXpressService.getFirmwareRevision(mDeviceAddress));
 
                             for (int i = 0; i < myDMSVersions.length(); ++i) {
                                 JSONObject rec = (JSONObject) myDMSVersions.get(i);
                                 String sversion = (String) rec.get("version");
-                                Version iversion = new Version(sversion);
+                                com.bumyeong.rfhook.Version iversion = new com.bumyeong.rfhook.Version(sversion);
 
                                 if (iversion.compareTo(vFirmwareRevision) > 0) {
                                     // newer version available.
@@ -268,57 +264,49 @@ public class DeviceDetails extends AppCompatActivity {
 
                         StringBuilder sb = new StringBuilder();
                         for(int i = 0; i < 4; i++ ) {
-                            sb.append(String.valueOf(receive[COMMAND_FRAME_POS_ID_START + i]));
+                            sb.append(String.valueOf(receive[COMMAND_FRAME_POS_ID_START + i] - 48));
                         }
 
                         String strID = sb.toString();
-                        String strColorName;
-                        int colorBack = Color.WHITE;
-                        switch(receive[COMMAND_FRAME_POS_STATUS] & 0xFF) {
-                            case 1:
-                                colorBack = Color.GREEN;
-                                strColorName = "GREEN";
-                                break;
+                        String strColorName = "";
+                        int result = 0;
 
-                            case 2:
-                                colorBack = Color.RED;
-                                strColorName = "RED";
-                                break;
-
-                            case 3:
-                                colorBack = Color.parseColor("#FFBF00");
-                                strColorName = "AMBER";
-                                break;
-
-                            default:
-                                colorBack = Color.WHITE;
-                                strColorName = "WHITE";
-                                break;
-                        }
-
-                        if( mReceiveID1.getText().length() == 0 ) {
-                            mReceiveID1.setText(strID);
-                            mReceiveStatus1.setBackgroundColor(colorBack);
-                        }
-                        else if( mReceiveID2.getText().length() == 0 ) {
-                            mReceiveID2.setText(strID);
-                            mReceiveStatus2.setBackgroundColor(colorBack);
-                        }
-                        else if( mReceiveID1.getText().equals(strID) == true ) {
-                            mReceiveStatus1.setBackgroundColor(colorBack);
-                        }
-                        else if( mReceiveID2.getText().equals(strID) == true ) {
-                            mReceiveStatus2.setBackgroundColor(colorBack);
+                        result = receive[COMMAND_FRAME_POS_STATUS] & 0x08;
+                        if( result != 0 ) {
+                            mPushSwitchState.setBackgroundResource(R.color.normal);
                         }
                         else {
-                            Log.e(TAG, "   ID SLOT FULL !. force to set #1");
-                            mReceiveID1.setText(strID);
-                            mReceiveStatus1.setBackgroundColor(colorBack);
+                            mPushSwitchState.setBackgroundResource(R.color.abnormal);
                         }
 
-                        sendACK();
-                        ShowNotification(strID + "," + strColorName, Toast.LENGTH_SHORT);
+                        result = receive[COMMAND_FRAME_POS_STATUS] & 0x04;
+                        if( result != 0 ) {
+                            mIrSensorState.setBackgroundResource(R.color.normal);
+                        }
+                        else {
+                            mIrSensorState.setBackgroundResource(R.color.abnormal);
+                        }
 
+                        result = receive[COMMAND_FRAME_POS_STATUS] & 0x02;
+                        if( result != 0 ) {
+                            mTouchSensorState.setBackgroundResource(R.color.normal);
+                        }
+                        else {
+                            mTouchSensorState.setBackgroundResource(R.color.abnormal);
+                        }
+
+                        result = receive[COMMAND_FRAME_POS_STATUS] & 0x01;
+                        if( result != 0 ) {
+                            mBatteryState.setBackgroundResource(R.color.normal);
+                        }
+                        else {
+                            mBatteryState.setBackgroundResource(R.color.abnormal);
+                        }
+
+                        mReceiveID.setText(strID);
+                        ShowNotification(strID , Toast.LENGTH_SHORT);
+
+                        sendACK();
                     } while( false );
 
                     Log.d(TAG, "-----------------------------------------");
@@ -365,7 +353,7 @@ public class DeviceDetails extends AppCompatActivity {
 
                     setBusMode(BusMode.STREAM_MODE);
 
-                    Intent passwordIntent = new Intent(context, Password.class);
+                    Intent passwordIntent = new Intent(context, com.bumyeong.rfhook.Password.class);
                     passwordIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     passwordIntent.putExtra("DeviceAddress", mDeviceAddress);
                     passwordIntent.putExtra("PasswordKind", BusModePasswordKind);
@@ -506,7 +494,7 @@ public class DeviceDetails extends AppCompatActivity {
          */
 
         AccountManager am = AccountManager.get(this);
-        String password = Password.RetrievePassword(am, BusModePasswordKind, mDeviceAddress);
+        String password = com.bumyeong.rfhook.Password.RetrievePassword(am, BusModePasswordKind, mDeviceAddress);
 
         if (null != password) {
             intent.putExtra("password", password);

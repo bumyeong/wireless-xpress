@@ -20,7 +20,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_span="3"
+                android:layout_span="6"
                 android:background="#F5B296"
                 android:gravity="center_vertical"
                 android:text="    TRANSMIT"
@@ -34,18 +34,19 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="#000000"
+                android:layout_span="2"
                 android:text="ID" />
             <EditText
                 android:id="@+id/editTextID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_span="2"
+                android:layout_span="4"
                 android:text="0000"
                 />
         </TableRow>
         <TableRow>
             <TextView android:layout_width="wrap_content" android:layout_height="30dp"
-                android:layout_span="3" android:background="#FFFFFF" />
+                android:layout_span="6" android:background="#FFFFFF" />
         </TableRow>
         <TableRow>
             <TextView
@@ -53,8 +54,10 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="#000000"
+                android:layout_span="2"
                 android:text="COMMAND" />
-            <RadioGroup>
+            <RadioGroup
+                android:layout_span="2">
                 <RadioButton
                     android:id="@+id/radioButtonSteady"
                     android:layout_width="wrap_content"
@@ -74,17 +77,18 @@
                 android:text="SEND"
                 android:gravity="center"
                 android:textSize="20sp"
+                android:layout_span="2"
                 android:textStyle="bold" />
         </TableRow>
         <TableRow>
             <TextView android:layout_width="wrap_content" android:layout_height="40dp"
-                      android:layout_span="3" android:background="#FFFFFF" />
+                      android:layout_span="6" android:background="#FFFFFF" />
         </TableRow>
         <TableRow>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_span="3"
+                android:layout_span="6"
                 android:background="#A5C3E6"
                 android:gravity="center_vertical"
                 android:text="    RECEIVE"
@@ -93,8 +97,8 @@
                 android:textStyle="bold" />
         </TableRow>
         <TableRow>
-            <TextView android:layout_width="wrap_content" android:layout_height="10dp"
-                android:layout_span="3" android:background="#FFFFFF" />
+            <TextView android:layout_width="wrap_content" android:layout_height="30dp"
+                android:layout_span="6" android:background="#FFFFFF" />
         </TableRow>
         <TableRow>
             <TextView
@@ -103,69 +107,83 @@
                 android:gravity="center"
                 android:textColor="#000000"
                 android:textSize="15sp"
+                android:layout_span="2"
                 android:text="ID" />
             <TextView
-                android:id="@+id/editTextReceiveID1"
+                android:id="@+id/editTextReceiveID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_span="2"
+                android:layout_span="4"
                 android:textSize="15sp"
                 android:text="" />
         </TableRow>
         <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="15sp"
-                android:textColor="#000000"
-                android:text="STATUS" />
-            <TextView
-                android:id="@+id/editTextReceiveStatus1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                android:layout_span="2"
-                android:textSize="15sp"
-                android:gravity="center" />
-        </TableRow>
-        <TableRow>
-            <TextView android:layout_width="wrap_content" android:layout_height="30dp"
-                android:layout_span="3" android:background="#FFFFFF" />
+            <TextView android:layout_width="wrap_content" android:layout_height="10dp"
+                android:layout_span="6" android:background="#FFFFFF" />
         </TableRow>
         <TableRow>
             <TextView
+                android:id="@+id/textviewPushSwitchState"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="3"
+                android:background="@color/normal"
                 android:gravity="center"
-                android:textColor="#000000"
+                android:text="@string/push_switch_state"
+                android:textColor="@color/white"
                 android:textSize="15sp"
-                android:text="ID" />
+                android:textStyle="bold" />
             <TextView
-                android:id="@+id/editTextReceiveID2"
+                android:id="@+id/textviewIrSensorState"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_span="2"
+                android:layout_height="60dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:gravity="center"
+                android:background="@color/normal"
+                android:textColor="@color/white"
                 android:textSize="15sp"
-                android:text=""
-                />
+                android:textStyle="bold"
+                android:layout_span="3"
+                android:text="@string/ir_sensor_state" />
         </TableRow>
         <TableRow>
             <TextView
+                android:id="@+id/textviewTouchSensorState"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
                 android:gravity="center"
-                android:textColor="#000000"
+                android:background="@color/normal"
+                android:textColor="@color/white"
                 android:textSize="15sp"
-                android:text="STATUS" />
+                android:textStyle="bold"
+                android:layout_span="3"
+                android:text="@string/touch_sensor_state" />
             <TextView
-                android:id="@+id/editTextReceiveStatus2"
+                android:id="@+id/textviewBatteryState"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                android:layout_span="2"
+                android:layout_height="60dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:background="@color/normal"
+                android:textColor="@color/white"
                 android:textSize="15sp"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_span="3"
+                android:text="@string/battery_state" />
         </TableRow>
     </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

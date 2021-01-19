@@ -53,4 +53,10 @@
     <string name="title_activity_firmware_release_notes">Firmware Release Notes</string>
 
     <string name="password_instructions">A password is required for this operation.</string>
+
+    <string name="push_switch_state">PUSH SWITCH</string>
+    <string name="ir_sensor_state">IR SENSOR</string>
+    <string name="touch_sensor_state">TOUCH SENSOR</string>
+    <string name="battery_state">BATTERY</string>
+
 </resources>
