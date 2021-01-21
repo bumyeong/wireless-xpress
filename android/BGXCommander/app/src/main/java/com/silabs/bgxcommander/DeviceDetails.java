@@ -256,15 +256,15 @@ public class DeviceDetails extends AppCompatActivity {
                             break;
                         }
 
-                        if( mCommandFrame.length != receive.length ) {
-                            Log.e(TAG, "   UNKNOWN PACKET");
-                            ShowNotification("[ERR] UNKNOWN PACKET !!!", Toast.LENGTH_LONG);
-                            break;
-                        }
+//                        if( mCommandFrame.length != receive.length ) {
+//                            Log.e(TAG, "   UNKNOWN PACKET");
+//                            ShowNotification("[ERR] UNKNOWN PACKET !!!", Toast.LENGTH_LONG);
+//                            break;
+//                        }
 
                         StringBuilder sb = new StringBuilder();
                         for(int i = 0; i < 4; i++ ) {
-                            sb.append(String.valueOf(receive[COMMAND_FRAME_POS_ID_START + i] - 48));
+                            sb.append(String.valueOf(receive[COMMAND_FRAME_POS_ID_START + i]));
                         }
 
                         String strID = sb.toString();
