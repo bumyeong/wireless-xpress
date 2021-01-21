@@ -307,30 +307,29 @@ public class DeviceDetails extends AppCompatActivity {
 //                                    }
 //                                    break;
 
+                                    case GFinderComm.COMMAND_SEND_DATA_INIT: {
+                                        sendPacket(Arrays.copyOf(mGFinderComm.getPacketAck(), mGFinderComm.getPacketSize()), 1);
+
+                                        mHandler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                tvMacAddress.setText(mGFinderComm.getMacAddress());
+                                                showInitData();
+                                            }
+                                        });
+                                    }
+                                    break;
+
                                     case GFinderComm.COMMAND_SEND_DATA: {
                                         sendPacket(Arrays.copyOf(mGFinderComm.getPacketAck(), mGFinderComm.getPacketSize()), 1);
 
-                                        if( mGFinderComm.getCommStatus() == GFinderComm.GFINDER_COMM_STATUS.INIT_DATA ) {
-//                                            mRnState = false;
-
-                                            mHandler.post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    showInitData();
-                                                }
-                                            });
-                                        }
-                                        else if( mGFinderComm.getCommStatus() == GFinderComm.GFINDER_COMM_STATUS.DISCONNECT ) {
-                                            sendPacket(Arrays.copyOf(mGFinderComm.getPacketDisconnect(), mGFinderComm.getPacketSize()), 500);
-                                        }
-                                        else if( mGFinderComm.getCommStatus() == GFinderComm.GFINDER_COMM_STATUS.CURRENT) {
-                                            mHandler.post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    showCurrentData();
-                                                }
-                                            });
-                                        }
+                                        mHandler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                tvMacAddress.setText(mGFinderComm.getMacAddress());
+                                                showCurrentData();
+                                            }
+                                        });
                                     }
                                     break;
 

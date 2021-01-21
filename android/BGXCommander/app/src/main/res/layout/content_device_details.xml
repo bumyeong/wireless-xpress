@@ -13,29 +13,31 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/device_name_tmpvalue_label"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtDeviceName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:text="@string/gfinder_device_name"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="@string/gfinder_mac"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
@@ -44,17 +46,19 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/gfinder_txt_blank"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/txtDeviceName" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
         android:layout_marginTop="24dp"
         android:text="@string/gfinder_remain_time"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
@@ -63,18 +67,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/gfinder_txt_blank"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/txtMacAddress" />
 
-<!--    O2    -->
+    <!--    O2    -->
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
         android:layout_marginTop="24dp"
         android:text="@string/gfinder_o2"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <TextView
@@ -82,7 +88,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="@string/gfinder_txt_00_0"
+        android:text="19.5"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/txtRemainTime" />
 
@@ -92,7 +99,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="24dp"
-        android:text="@string/gfinder_txt_00_0"
+        android:text="23.5"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView10"
         app:layout_constraintTop_toBottomOf="@+id/txtRemainTime" />
 
@@ -100,9 +108,11 @@
         android:id="@+id/txtO2Current"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:text="@string/gfinder_txt_00_0"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView11"
         app:layout_constraintTop_toBottomOf="@+id/txtRemainTime" />
 
@@ -110,32 +120,33 @@
         android:id="@+id/textView10"
         android:layout_width="0dp"
         android:layout_height="20dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:text="@string/gfinder_txt_minus"
-        app:layout_constraintStart_toEndOf="@+id/txtO2Low"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/txtRemainTime" />
+
+    <!--    CH4    -->
 
     <TextView
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
         android:layout_marginTop="24dp"
         android:text=":"
-        app:layout_constraintStart_toEndOf="@+id/txtO2High"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/txtRemainTime" />
-
-<!--    CH4    -->
 
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
         android:layout_marginTop="24dp"
         android:text="@string/gfinder_ch4"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
@@ -143,7 +154,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="@string/gfinder_txt_0"
+        android:text="25"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/txtO2Low" />
 
@@ -153,7 +165,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="24dp"
-        android:text="@string/gfinder_txt_0"
+        android:text="50"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView13"
         app:layout_constraintTop_toBottomOf="@+id/txtO2Low" />
 
@@ -161,9 +174,11 @@
         android:id="@+id/txtCH4Current"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:text="@string/gfinder_txt_0"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView14"
         app:layout_constraintTop_toBottomOf="@+id/txtO2Low" />
 
@@ -171,32 +186,33 @@
         android:id="@+id/textView13"
         android:layout_width="0dp"
         android:layout_height="20dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:text="-"
-        app:layout_constraintStart_toEndOf="@+id/txtCH4Low"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/txtO2Low" />
+
+    <!--    H2S    -->
 
     <TextView
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
         android:layout_marginTop="24dp"
         android:text=":"
-        app:layout_constraintStart_toEndOf="@+id/txtCH4High"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/txtO2Low" />
-
-<!--    H2S    -->
 
     <TextView
         android:id="@+id/textView15"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
         android:layout_marginTop="24dp"
         android:text="@string/gfinder_h2s"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <TextView
@@ -204,7 +220,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="@string/gfinder_txt_0_0"
+        android:text="10.0"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/txtCH4Low" />
 
@@ -214,7 +231,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="24dp"
-        android:text="@string/gfinder_txt_0_0"
+        android:text="15.0"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView16"
         app:layout_constraintTop_toBottomOf="@+id/txtCH4Low" />
 
@@ -222,9 +240,11 @@
         android:id="@+id/txtH2SCurrent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:text="@string/gfinder_txt_0_0"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView17"
         app:layout_constraintTop_toBottomOf="@+id/txtCH4Low" />
 
@@ -235,29 +255,31 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:text="-"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/txtH2SLow"
         app:layout_constraintTop_toBottomOf="@+id/txtCH4Low" />
+
+    <!--    Comb    -->
 
     <TextView
         android:id="@+id/textView17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
         android:layout_marginTop="24dp"
         android:text=":"
-        app:layout_constraintStart_toEndOf="@+id/txtH2SHigh"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/txtCH4Low" />
-
-<!--    Comb    -->
 
     <TextView
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
         android:layout_marginTop="24dp"
         android:text="@string/gfinder_co"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
     <TextView
@@ -265,7 +287,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="@string/gfinder_txt_0"
+        android:text="35"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/txtH2SLow" />
 
@@ -275,7 +298,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="24dp"
-        android:text="@string/gfinder_txt_0"
+        android:text="200"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView19"
         app:layout_constraintTop_toBottomOf="@+id/txtH2SLow" />
 
@@ -283,9 +307,11 @@
         android:id="@+id/txtCombCurrent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:text="@string/gfinder_txt_0"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView20"
         app:layout_constraintTop_toBottomOf="@+id/txtH2SLow" />
 
@@ -293,41 +319,45 @@
         android:id="@+id/textView19"
         android:layout_width="0dp"
         android:layout_height="20dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:text="-"
-        app:layout_constraintStart_toEndOf="@+id/txtCombLow"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/txtH2SLow" />
+
+    <!--    Update Time    -->
 
     <TextView
         android:id="@+id/textView20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
         android:layout_marginTop="24dp"
         android:text=":"
-        app:layout_constraintStart_toEndOf="@+id/txtCombHigh"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/txtH2SLow" />
-
-<!--    Update Time    -->
 
     <TextView
         android:id="@+id/textView21"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="@string/gfinder_update_time"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
     <TextView
         android:id="@+id/txtUpdateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="00:00:00"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:text="0000/00/00 00:00:00"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/textView21"
         app:layout_constraintTop_toBottomOf="@+id/txtCombLow" />
 
     <Button
@@ -348,5 +378,26 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="107dp"
         app:layout_constraintStart_toEndOf="@+id/textView" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="214dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="149dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
