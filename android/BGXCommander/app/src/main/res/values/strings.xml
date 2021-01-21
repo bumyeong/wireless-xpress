@@ -54,6 +54,8 @@
 
     <string name="password_instructions">A password is required for this operation.</string>
 
+    <string name="on_state">ON</string>
+    <string name="off_state">OFF</string>
     <string name="push_switch_state">PUSH SWITCH</string>
     <string name="ir_sensor_state">IR SENSOR</string>
     <string name="touch_sensor_state">TOUCH SENSOR</string>

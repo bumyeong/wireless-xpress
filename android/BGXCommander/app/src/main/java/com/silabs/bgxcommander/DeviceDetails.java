@@ -69,6 +69,8 @@ public class DeviceDetails extends AppCompatActivity {
     private Button mButtonSend;
 
     private TextView mReceiveID;
+    private TextView mOn;
+    private TextView mOff;
     private TextView mPushSwitchState;
     private TextView mIrSensorState;
     private TextView mTouchSensorState;
@@ -113,6 +115,8 @@ public class DeviceDetails extends AppCompatActivity {
         mButtonSend = (Button) findViewById(R.id.buttonSend);
 
         mReceiveID = (TextView)findViewById(R.id.editTextReceiveID);
+        mOn = (TextView)findViewById(R.id.textviewOn);
+        mOff = (TextView)findViewById(R.id.textviewOff);
         mPushSwitchState = (TextView)findViewById(R.id.textviewPushSwitchState);
         mIrSensorState = (TextView)findViewById(R.id.textviewIrSensorState);
         mTouchSensorState = (TextView)findViewById(R.id.textviewTouchSensorState);
@@ -268,8 +272,24 @@ public class DeviceDetails extends AppCompatActivity {
                         }
 
                         String strID = sb.toString();
-                        String strColorName = "";
+                        mReceiveID.setText(strID);
+                        ShowNotification(strID , Toast.LENGTH_SHORT);
+
                         int result = 0;
+
+                        result = receive[COMMAND_FRAME_POS_TYPE] & 0xFF;
+                        if( result == 1 ) {
+                            mOn.setBackgroundResource(R.color.normal);
+                            mOn.setTextColor(R.color.white);
+                            mOff.setBackgroundResource(R.color.white);
+                            mOff.setTextColor(R.color.black);
+                        }
+                        else {
+                            mOff.setBackgroundResource(R.color.abnormal);
+                            mOff.setTextColor(R.color.white);
+                            mOn.setBackgroundResource(R.color.white);
+                            mOn.setTextColor(R.color.black);
+                        }
 
                         result = receive[COMMAND_FRAME_POS_STATUS] & 0x08;
                         if( result != 0 ) {
@@ -302,9 +322,6 @@ public class DeviceDetails extends AppCompatActivity {
                         else {
                             mBatteryState.setBackgroundResource(R.color.abnormal);
                         }
-
-                        mReceiveID.setText(strID);
-                        ShowNotification(strID , Toast.LENGTH_SHORT);
 
                         sendACK();
                     } while( false );
