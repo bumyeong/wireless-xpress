@@ -86,7 +86,7 @@ public class DeviceDetails extends AppCompatActivity {
 
     // UI Elements
     private Button mCancelButton;
-    private TextView tvDeviceName;
+//    private TextView tvDeviceName;
     private TextView tvMacAddress;
     private TextView tvRemainTime;
     private TextView tvO2Low;
@@ -121,29 +121,29 @@ public class DeviceDetails extends AppCompatActivity {
     private boolean mIsTransferDataType = true;
     private GFinderComm mGFinderComm = new GFinderComm();
 
-    public class rnHandler extends Handler { // (r)ead (n)otification 인듯
-        public rnHandler() {
-        }
+//    public class rnHandler extends Handler { // (r)ead (n)otification 인듯
+//        public rnHandler() {
+//        }
+//
+//        public void handleMessage(Message message) {
+//            removeMessages(0);
+//
+//            byte[] sendData = Arrays.copyOf(mGFinderComm.getPacketRequestInformation(), mGFinderComm.getPacketSize());
+//
+//            Intent writeIntent = new Intent(BGXpressService.ACTION_WRITE_SERIAL_BIN_DATA);
+//            writeIntent.setClass(mContext, BGXpressService.class);
+//            writeIntent.putExtra("DeviceAddress", mDeviceAddress);
+//            writeIntent.putExtra("value", sendData);
+//            startService(writeIntent);
+//
+//            if (mRnState) {
+//                sendEmptyMessageDelayed(0, 1000);
+//            }
+//        }
+//    }
 
-        public void handleMessage(Message message) {
-            removeMessages(0);
-
-            byte[] sendData = Arrays.copyOf(mGFinderComm.getPacketRequestInformation(), mGFinderComm.getPacketSize());
-
-            Intent writeIntent = new Intent(BGXpressService.ACTION_WRITE_SERIAL_BIN_DATA);
-            writeIntent.setClass(mContext, BGXpressService.class);
-            writeIntent.putExtra("DeviceAddress", mDeviceAddress);
-            writeIntent.putExtra("value", sendData);
-            startService(writeIntent);
-
-            if (mRnState) {
-                sendEmptyMessageDelayed(0, 1000);
-            }
-        }
-    }
-
-    private rnHandler mRnHandler = new rnHandler();
-    private boolean mRnState = false;
+//    private rnHandler mRnHandler = new rnHandler();
+//    private boolean mRnState = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,7 +156,7 @@ public class DeviceDetails extends AppCompatActivity {
         mBusMode = BusMode.UNKNOWN_MODE;
 
         mCancelButton = (Button)findViewById(R.id.btnDeviceDetailsExit);
-        tvDeviceName = (TextView)findViewById(R.id.txtDeviceName);
+//        tvDeviceName = (TextView)findViewById(R.id.txtDeviceName);
         tvMacAddress = (TextView)findViewById(R.id.txtMacAddress);
         tvRemainTime = (TextView)findViewById(R.id.txtRemainTime);
         tvO2Low = (TextView)findViewById(R.id.txtO2Low);
@@ -291,27 +291,27 @@ public class DeviceDetails extends AppCompatActivity {
                             else {
 //                                Log.e(TAG, "BGX binary data receiver : " + data.length);
                                 switch(mGFinderComm.parse(data)) {
-                                    case GFinderComm.COMMAND_GF_MAC_NAME: {
-                                        mHandler.post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                tvDeviceName.setText(mGFinderComm.getDeviceName());
-                                                tvMacAddress.setText(mGFinderComm.getMacAddress());
-                                            }
-                                        });
-
-                                        sendPacket(Arrays.copyOf(mGFinderComm.getPacketAck(), mGFinderComm.getPacketSize()), 1);
-
-                                        mRnState = true;
-                                        mRnHandler.sendEmptyMessageDelayed(0, 1000);
-                                    }
-                                    break;
+//                                    case GFinderComm.COMMAND_GF_MAC_NAME: {
+//                                        mHandler.post(new Runnable() {
+//                                            @Override
+//                                            public void run() {
+//                                                tvDeviceName.setText(mGFinderComm.getDeviceName());
+//                                                tvMacAddress.setText(mGFinderComm.getMacAddress());
+//                                            }
+//                                        });
+//
+//                                        sendPacket(Arrays.copyOf(mGFinderComm.getPacketAck(), mGFinderComm.getPacketSize()), 1);
+//
+//                                        mRnState = true;
+//                                        mRnHandler.sendEmptyMessageDelayed(0, 1000);
+//                                    }
+//                                    break;
 
                                     case GFinderComm.COMMAND_SEND_DATA: {
                                         sendPacket(Arrays.copyOf(mGFinderComm.getPacketAck(), mGFinderComm.getPacketSize()), 1);
 
                                         if( mGFinderComm.getCommStatus() == GFinderComm.GFINDER_COMM_STATUS.INIT_DATA ) {
-                                            mRnState = false;
+//                                            mRnState = false;
 
                                             mHandler.post(new Runnable() {
                                                 @Override
@@ -446,7 +446,7 @@ public class DeviceDetails extends AppCompatActivity {
             }
         });
 
-        sendPacket(Arrays.copyOf(mGFinderComm.getPacketConnectionOk(), mGFinderComm.getPacketSize()), 1);
+//        sendPacket(Arrays.copyOf(mGFinderComm.getPacketConnectionOk(), mGFinderComm.getPacketSize()), 1);
 
         BGXpressService.getBGXDeviceInfo(this, mDeviceAddress);
     }

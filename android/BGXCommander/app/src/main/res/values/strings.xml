@@ -84,4 +84,5 @@
     <string name="gfinder_txt_0_0">0.0</string>
     <string name="gfinder_txt_00_0">00.0</string>
     <string name="gfinder_update_time">Update Time</string>
+    <string name="gfinder_device_name">GFM-400</string>
 </resources>
