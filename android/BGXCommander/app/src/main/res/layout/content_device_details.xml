@@ -8,396 +8,607 @@
     tools:context=".DeviceDetails"
     tools:showIn="@layout/activity_device_details">
 
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/device_name_tmpvalue_label"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/txtDeviceName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/gfinder_device_name"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/gfinder_mac"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <TextView
-        android:id="@+id/txtMacAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/gfinder_txt_blank"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/txtDeviceName" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/gfinder_remain_time"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-    <TextView
-        android:id="@+id/txtRemainTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/gfinder_txt_blank"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/txtMacAddress" />
-
-    <!--    O2    -->
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/gfinder_o2"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-    <TextView
-        android:id="@+id/txtO2Low"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="19.5"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/txtRemainTime" />
-
-    <TextView
-        android:id="@+id/txtO2High"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="24dp"
-        android:text="23.5"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/textView10"
-        app:layout_constraintTop_toBottomOf="@+id/txtRemainTime" />
-
-    <TextView
-        android:id="@+id/txtO2Current"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/gfinder_txt_00_0"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/textView11"
-        app:layout_constraintTop_toBottomOf="@+id/txtRemainTime" />
-
-    <TextView
-        android:id="@+id/textView10"
+    <TableLayout
         android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/gfinder_txt_minus"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/txtRemainTime" />
-
-    <!--    CH4    -->
-
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text=":"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/txtRemainTime" />
-
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/gfinder_ch4"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-    <TextView
-        android:id="@+id/txtCH4Low"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="25"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/txtO2Low" />
-
-    <TextView
-        android:id="@+id/txtCH4High"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="24dp"
-        android:text="50"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/textView13"
-        app:layout_constraintTop_toBottomOf="@+id/txtO2Low" />
-
-    <TextView
-        android:id="@+id/txtCH4Current"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/gfinder_txt_0"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/textView14"
-        app:layout_constraintTop_toBottomOf="@+id/txtO2Low" />
-
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="24dp"
-        android:text="-"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/txtO2Low" />
-
-    <!--    H2S    -->
-
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text=":"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/txtO2Low" />
-
-    <TextView
-        android:id="@+id/textView15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/gfinder_h2s"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
-
-    <TextView
-        android:id="@+id/txtH2SLow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="10.0"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/txtCH4Low" />
-
-    <TextView
-        android:id="@+id/txtH2SHigh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="24dp"
-        android:text="15.0"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/textView16"
-        app:layout_constraintTop_toBottomOf="@+id/txtCH4Low" />
-
-    <TextView
-        android:id="@+id/txtH2SCurrent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/gfinder_txt_0_0"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/textView17"
-        app:layout_constraintTop_toBottomOf="@+id/txtCH4Low" />
-
-    <TextView
-        android:id="@+id/textView16"
-        android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:text="-"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/txtH2SLow"
-        app:layout_constraintTop_toBottomOf="@+id/txtCH4Low" />
-
-    <!--    Comb    -->
-
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text=":"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/txtCH4Low" />
-
-    <TextView
-        android:id="@+id/textView18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/gfinder_co"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
-
-    <TextView
-        android:id="@+id/txtCombLow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="35"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/txtH2SLow" />
-
-    <TextView
-        android:id="@+id/txtCombHigh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="24dp"
-        android:text="200"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/textView19"
-        app:layout_constraintTop_toBottomOf="@+id/txtH2SLow" />
-
-    <TextView
-        android:id="@+id/txtCombCurrent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/gfinder_txt_0"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/textView20"
-        app:layout_constraintTop_toBottomOf="@+id/txtH2SLow" />
-
-    <TextView
-        android:id="@+id/textView19"
-        android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="24dp"
-        android:text="-"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/txtH2SLow" />
-
-    <!--    Update Time    -->
-
-    <TextView
-        android:id="@+id/textView20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text=":"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/txtH2SLow" />
-
-    <TextView
-        android:id="@+id/textView21"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/gfinder_update_time"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/textView18" />
-
-    <TextView
-        android:id="@+id/txtUpdateTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:text="0000/00/00 00:00:00"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/textView21"
-        app:layout_constraintTop_toBottomOf="@+id/txtCombLow" />
-
-    <Button
-        android:id="@+id/btnDeviceDetailsExit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="@string/Cancel"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtUpdateTime" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="107dp"
-        app:layout_constraintStart_toEndOf="@+id/textView" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="16dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="214dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="149dp" />
-
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:stretchColumns="*"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" >
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="2"
+                android:background="#F5B296"
+                android:gravity="center_vertical"
+                android:text="@string/device_name_tmpvalue_label"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtDeviceName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:gravity="center_vertical"
+                android:text="@string/gfinder_device_name"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="2"
+                android:background="#F5B296"
+                android:gravity="center_vertical"
+                android:text="@string/gfinder_mac"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtMacAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:gravity="center_vertical"
+                android:text="00:00:00:00:00:00"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="2"
+                android:background="#F5B296"
+                android:gravity="center_vertical"
+                android:text="@string/gfinder_remain_time"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtRemainTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:gravity="center_vertical"
+                android:text="@string/gfinder_txt_blank"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="wrap_content" android:layout_height="10dp"
+                android:layout_span="4" android:background="#FFFFFF" />
+        </TableRow>
+        <!--    O2    -->
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="1"
+                android:background="#A5C3E6"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="@string/gfinder_o2"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtO2Low"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="19.5"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtO2Current"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="@string/gfinder_txt_00_0"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtO2High"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="23.5"
+                android:textSize="16sp" />
+        </TableRow>
+        <!--    CH4    -->
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="1"
+                android:background="#A5C3E6"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="@string/gfinder_ch4"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtCH4Low"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="25"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtCH4Current"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="@string/gfinder_txt_0"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtCH4High"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="50"
+                android:textSize="16sp" />
+        </TableRow>
+        <!--    H2S    -->
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="1"
+                android:background="#A5C3E6"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="@string/gfinder_h2s"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtH2SLow"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="10.0"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtH2SCurrent"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="@string/gfinder_txt_0_0"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtH2SHigh"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="15.0"
+                android:textSize="16sp" />
+        </TableRow>
+        <!--    CO    -->
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="1"
+                android:background="#A5C3E6"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="@string/gfinder_co"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtCombLow"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="35"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtCombCurrent"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="@string/gfinder_txt_0"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtCombHigh"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="200"
+                android:textSize="16sp" />
+        </TableRow>
+        <!--    Update Time    -->
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="1"
+                android:background="#A5C3E6"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="@string/gfinder_update_time"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtUpdateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="3"
+                android:gravity="center_vertical"
+                android:text="0000/00/00 00:00:00"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+        <!--              -->
+        <!--   SECOND     -->
+        <!--              -->
+        <TableRow>
+            <TextView android:layout_width="wrap_content" android:layout_height="80dp"
+                android:layout_span="4" android:background="#FFFFFF" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="2"
+                android:background="#F5B296"
+                android:gravity="center_vertical"
+                android:text="@string/device_name_tmpvalue_label"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtDeviceName2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:gravity="center_vertical"
+                android:text="@string/gfinder_device_name"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="2"
+                android:background="#F5B296"
+                android:gravity="center_vertical"
+                android:text="@string/gfinder_mac"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtMacAddress2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:gravity="center_vertical"
+                android:text="00:00:00:00:00:00"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="2"
+                android:background="#F5B296"
+                android:gravity="center_vertical"
+                android:text="@string/gfinder_remain_time"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtRemainTime2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:gravity="center_vertical"
+                android:text="@string/gfinder_txt_blank"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="wrap_content" android:layout_height="10dp"
+                android:layout_span="4" android:background="#FFFFFF" />
+        </TableRow>
+        <!--    O2    -->
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="1"
+                android:background="#A5C3E6"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="@string/gfinder_o2"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtO2Low2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="19.5"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtO2Current2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="@string/gfinder_txt_00_0"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtO2High2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="23.5"
+                android:textSize="16sp" />
+        </TableRow>
+        <!--    CH4    -->
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="1"
+                android:background="#A5C3E6"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="@string/gfinder_ch4"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtCH4Low2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="25"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtCH4Current2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="@string/gfinder_txt_0"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtCH4High2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="50"
+                android:textSize="16sp" />
+        </TableRow>
+        <!--    H2S    -->
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="1"
+                android:background="#A5C3E6"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="@string/gfinder_h2s"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtH2SLow2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="10.0"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtH2SCurrent2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="@string/gfinder_txt_0_0"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtH2SHigh2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="15.0"
+                android:textSize="16sp" />
+        </TableRow>
+        <!--    CO    -->
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="1"
+                android:background="#A5C3E6"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="@string/gfinder_co"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtCombLow2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="35"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtCombCurrent2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="@string/gfinder_txt_0"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtCombHigh2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="1"
+                android:gravity="center"
+                android:text="200"
+                android:textSize="16sp" />
+        </TableRow>
+        <!--    Update Time    -->
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_span="1"
+                android:background="#A5C3E6"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="@string/gfinder_update_time"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtUpdateTime2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_span="3"
+                android:gravity="center_vertical"
+                android:text="0000/00/00 00:00:00"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+    </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

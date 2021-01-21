@@ -10,7 +10,7 @@
     <string name="scan_menuitem_label">Scan</string>
     <string name="update_menuitem_label">Update</string>
     <string name="fwupdate_menuitem_label">F/W Update</string>
-    <string name="device_name_tmpvalue_label">Device Name</string>
+    <string name="device_name_tmpvalue_label">DEVICE NAME</string>
     <string name="rssi_tmpvalue_label">-85</string>
     <string name="device_uuid_tempvalue_label">device uuid</string>
     <string name="fw_update_release_label">Release</string>
@@ -72,8 +72,8 @@
     <string name="Save">Save</string>
     <string name="Start">Start</string>
 
-    <string name="gfinder_mac">Mac Address</string>
-    <string name="gfinder_remain_time">Remain</string>
+    <string name="gfinder_mac">MAC ADDRESS</string>
+    <string name="gfinder_remain_time">REMAIN</string>
     <string name="gfinder_o2">O2</string>
     <string name="gfinder_ch4">CH4</string>
     <string name="gfinder_h2s">H2S</string>
@@ -83,6 +83,6 @@
     <string name="gfinder_txt_0">0</string>
     <string name="gfinder_txt_0_0">0.0</string>
     <string name="gfinder_txt_00_0">00.0</string>
-    <string name="gfinder_update_time">Update Time</string>
+    <string name="gfinder_update_time">UPDATE TIME</string>
     <string name="gfinder_device_name">GFM-400</string>
 </resources>

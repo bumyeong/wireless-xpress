@@ -85,7 +85,6 @@ public class DeviceDetails extends AppCompatActivity {
 
 
     // UI Elements
-    private Button mCancelButton;
 //    private TextView tvDeviceName;
     private TextView tvMacAddress;
     private TextView tvRemainTime;
@@ -102,6 +101,21 @@ public class DeviceDetails extends AppCompatActivity {
     private TextView tvCombHigh;
     private TextView tvCombCurrent;
     private TextView tvLastTime;
+    private TextView tvMacAddress2;
+    private TextView tvRemainTime2;
+    private TextView tvO2Low2;
+    private TextView tvO2High2;
+    private TextView tvO2Current2;
+    private TextView tvCh4Low2;
+    private TextView tvCh4High2;
+    private TextView tvCh4Current2;
+    private TextView tvH2sLow2;
+    private TextView tvH2sHigh2;
+    private TextView tvH2sCurrent2;
+    private TextView tvCombLow2;
+    private TextView tvCombHigh2;
+    private TextView tvCombCurrent2;
+    private TextView tvLastTime2;
 
     private int mBusMode;
 
@@ -155,7 +169,6 @@ public class DeviceDetails extends AppCompatActivity {
 
         mBusMode = BusMode.UNKNOWN_MODE;
 
-        mCancelButton = (Button)findViewById(R.id.btnDeviceDetailsExit);
 //        tvDeviceName = (TextView)findViewById(R.id.txtDeviceName);
         tvMacAddress = (TextView)findViewById(R.id.txtMacAddress);
         tvRemainTime = (TextView)findViewById(R.id.txtRemainTime);
@@ -172,6 +185,22 @@ public class DeviceDetails extends AppCompatActivity {
         tvCombHigh = (TextView)findViewById(R.id.txtCombHigh);
         tvCombCurrent = (TextView)findViewById(R.id.txtCombCurrent);
         tvLastTime = (TextView)findViewById(R.id.txtUpdateTime);
+
+        tvMacAddress2 = (TextView)findViewById(R.id.txtMacAddress2);
+        tvRemainTime2 = (TextView)findViewById(R.id.txtRemainTime2);
+        tvO2Low2 = (TextView)findViewById(R.id.txtO2Low2);
+        tvO2High2 = (TextView)findViewById(R.id.txtO2High2);
+        tvO2Current2 = (TextView)findViewById(R.id.txtO2Current2);
+        tvCh4Low2 = (TextView)findViewById(R.id.txtCH4Low2);
+        tvCh4High2 = (TextView)findViewById(R.id.txtCH4High2);
+        tvCh4Current2 = (TextView)findViewById(R.id.txtCH4Current2);
+        tvH2sLow2 = (TextView)findViewById(R.id.txtH2SLow2);
+        tvH2sHigh2 = (TextView)findViewById(R.id.txtH2SHigh2);
+        tvH2sCurrent2 = (TextView)findViewById(R.id.txtH2SCurrent2);
+        tvCombLow2 = (TextView)findViewById(R.id.txtCombLow2);
+        tvCombHigh2 = (TextView)findViewById(R.id.txtCombHigh2);
+        tvCombCurrent2 = (TextView)findViewById(R.id.txtCombCurrent2);
+        tvLastTime2 = (TextView)findViewById(R.id.txtUpdateTime2);
 
         final IntentFilter bgxpressServiceFilter = new IntentFilter(BGXpressService.BGX_CONNECTION_STATUS_CHANGE);
         bgxpressServiceFilter.addAction(BGXpressService.BGX_MODE_STATE_CHANGE);
@@ -291,21 +320,6 @@ public class DeviceDetails extends AppCompatActivity {
                             else {
 //                                Log.e(TAG, "BGX binary data receiver : " + data.length);
                                 switch(mGFinderComm.parse(data)) {
-//                                    case GFinderComm.COMMAND_GF_MAC_NAME: {
-//                                        mHandler.post(new Runnable() {
-//                                            @Override
-//                                            public void run() {
-//                                                tvDeviceName.setText(mGFinderComm.getDeviceName());
-//                                                tvMacAddress.setText(mGFinderComm.getMacAddress());
-//                                            }
-//                                        });
-//
-//                                        sendPacket(Arrays.copyOf(mGFinderComm.getPacketAck(), mGFinderComm.getPacketSize()), 1);
-//
-//                                        mRnState = true;
-//                                        mRnHandler.sendEmptyMessageDelayed(0, 1000);
-//                                    }
-//                                    break;
 
                                     case GFinderComm.COMMAND_SEND_DATA_INIT: {
                                         sendPacket(Arrays.copyOf(mGFinderComm.getPacketAck(), mGFinderComm.getPacketSize()), 1);
@@ -314,6 +328,7 @@ public class DeviceDetails extends AppCompatActivity {
                                             @Override
                                             public void run() {
                                                 tvMacAddress.setText(mGFinderComm.getMacAddress());
+                                                tvMacAddress2.setText(mGFinderComm.getMacAddress2());
                                                 showInitData();
                                             }
                                         });
@@ -327,6 +342,7 @@ public class DeviceDetails extends AppCompatActivity {
                                             @Override
                                             public void run() {
                                                 tvMacAddress.setText(mGFinderComm.getMacAddress());
+                                                tvMacAddress2.setText(mGFinderComm.getMacAddress2());
                                                 showCurrentData();
                                             }
                                         });
@@ -396,14 +412,6 @@ public class DeviceDetails extends AppCompatActivity {
         };
 
         registerReceiver(mConnectionBroadcastReceiver, bgxpressServiceFilter);
-
-        mCancelButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        } );
-
 
         mHandler = new Handler(new Handler.Callback() {
             @Override
@@ -808,6 +816,15 @@ public class DeviceDetails extends AppCompatActivity {
         tvH2sHigh.setText(mGFinderComm.getInitDataH2SHigh());
         tvCombLow.setText(mGFinderComm.getInitDataCoLow());
         tvCombHigh.setText(mGFinderComm.getInitDataCoHigh());
+
+        tvO2Low2.setText(mGFinderComm.getInitDataO2Low2());
+        tvO2High2.setText(mGFinderComm.getInitDataO2High2());
+        tvCh4Low2.setText(mGFinderComm.getInitDataCH4Low2());
+        tvCh4High2.setText(mGFinderComm.getInitDataCH4High2());
+        tvH2sLow2.setText(mGFinderComm.getInitDataH2SLow2());
+        tvH2sHigh2.setText(mGFinderComm.getInitDataH2SHigh2());
+        tvCombLow2.setText(mGFinderComm.getInitDataCoLow2());
+        tvCombHigh2.setText(mGFinderComm.getInitDataCoHigh2());
     }
 
     private void showCurrentData() {
@@ -816,5 +833,77 @@ public class DeviceDetails extends AppCompatActivity {
         tvH2sCurrent.setText(mGFinderComm.getCurrentDataH2S());
         tvCombCurrent.setText(mGFinderComm.getCurrentDataCo());
         tvLastTime.setText(mGFinderComm.getTime());
+
+        if(mGFinderComm.isAlarmO2() == true) {
+            tvO2Current.setBackgroundResource(R.color.colorPrimary);
+            tvO2Current.setTextColor(R.color.white);
+        }
+        else {
+            tvO2Current.setBackgroundResource(R.color.white);
+            tvO2Current.setTextColor(R.color.black);
+        }
+        if(mGFinderComm.isAlarmCH4() == true) {
+            tvCh4Current.setBackgroundResource(R.color.colorPrimary);
+            tvCh4Current.setTextColor(R.color.white);
+        }
+        else {
+            tvCh4Current.setBackgroundResource(R.color.white);
+            tvCh4Current.setTextColor(R.color.black);
+        }
+        if(mGFinderComm.isAlarmH2S() == true) {
+            tvH2sCurrent.setBackgroundResource(R.color.colorPrimary);
+            tvH2sCurrent.setTextColor(R.color.white);
+        }
+        else {
+            tvH2sCurrent.setBackgroundResource(R.color.white);
+            tvH2sCurrent.setTextColor(R.color.black);
+        }
+        if(mGFinderComm.isAlarmCo() == true) {
+            tvCombCurrent.setBackgroundResource(R.color.colorPrimary);
+            tvCombCurrent.setTextColor(R.color.white);
+        }
+        else {
+            tvCombCurrent.setBackgroundResource(R.color.white);
+            tvCombCurrent.setTextColor(R.color.black);
+        }
+
+        tvO2Current2.setText(mGFinderComm.getCurrentDataO22());
+        tvCh4Current2.setText(mGFinderComm.getCurrentDataCH42());
+        tvH2sCurrent2.setText(mGFinderComm.getCurrentDataH2S2());
+        tvCombCurrent2.setText(mGFinderComm.getCurrentDataCo2());
+        tvLastTime2.setText(mGFinderComm.getTime2());
+
+        if(mGFinderComm.isAlarmO22() == true) {
+            tvO2Current2.setBackgroundResource(R.color.colorPrimary);
+            tvO2Current2.setTextColor(R.color.white);
+        }
+        else {
+            tvO2Current2.setBackgroundResource(R.color.white);
+            tvO2Current2.setTextColor(R.color.black);
+        }
+        if(mGFinderComm.isAlarmCH42() == true) {
+            tvCh4Current2.setBackgroundResource(R.color.colorPrimary);
+            tvCh4Current2.setTextColor(R.color.white);
+        }
+        else {
+            tvCh4Current2.setBackgroundResource(R.color.white);
+            tvCh4Current2.setTextColor(R.color.black);
+        }
+        if(mGFinderComm.isAlarmH2S2() == true) {
+            tvH2sCurrent2.setBackgroundResource(R.color.colorPrimary);
+            tvH2sCurrent2.setTextColor(R.color.white);
+        }
+        else {
+            tvH2sCurrent2.setBackgroundResource(R.color.white);
+            tvH2sCurrent2.setTextColor(R.color.black);
+        }
+        if(mGFinderComm.isAlarmCo2() == true) {
+            tvCombCurrent2.setBackgroundResource(R.color.colorPrimary);
+            tvCombCurrent2.setTextColor(R.color.white);
+        }
+        else {
+            tvCombCurrent2.setBackgroundResource(R.color.white);
+            tvCombCurrent2.setTextColor(R.color.black);
+        }
     }
 }
